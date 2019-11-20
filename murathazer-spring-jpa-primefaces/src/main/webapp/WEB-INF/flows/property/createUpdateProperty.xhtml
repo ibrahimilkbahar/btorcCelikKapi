@@ -1,0 +1,79 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">
+        Özellik Tanımlama
+    </ui:define>
+
+
+
+	<ui:define name="implementation">
+		<h:form id="createPropertyForm">
+			<p:fieldset legend="Özellik Bilgileri">
+				<h:panelGroup id="property">
+					<h:panelGrid columns="2" cellpadding="5">
+						<h:outputLabel for="name" value="Özellik Adı:" style="font-weight:bold" />
+						<p:inputText id="name" value="#{propertyController.property.name}" />
+	
+						<h:outputLabel for="code" value="Özellik Kodu:" style="font-weight:bold" />
+						<p:inputText id="code" value="#{propertyController.property.code}" />
+	
+						<h:outputLabel for="hint" value="Yardımcı Bilgi:" style="font-weight:bold" />
+						<p:inputText id="hint" value="#{propertyController.property.hint}" />
+				
+						<p:outputLabel for="propertyTypeId" value="Özellik Tipi:" style="font-weight:bold" />
+						<p:selectOneMenu id="propertyTypeId" value="#{propertyController.propertyTypeId}" style="width:150px">
+							<f:ajax render="price" />
+							<f:selectItem itemLabel="Özellik Tipi Seçiniz..." itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{propertyController.propertyTypeList}" var="propertyType" itemLabel="#{propertyType.name}" itemValue="#{propertyType.id}" />
+						</p:selectOneMenu>
+	
+						<p:outputLabel for="propertyGroupId" value="Özellik Grubu:" style="font-weight:bold" />
+						<p:selectOneMenu id="propertyGroupId" value="#{propertyController.propertyGroupId}" style="width:150px">
+							<f:selectItem itemLabel="Özellik Grubu Seçiniz..." itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{propertyController.propertyGroupList}" var="propertyGroup" itemLabel="#{propertyGroup.name}" itemValue="#{propertyGroup.id}" />
+						</p:selectOneMenu>
+						
+						<p:outputLabel for="priceTypeId" value="Ücretlendirme Tipi:" style="font-weight:bold" />
+						<p:selectOneMenu id="priceTypeId" value="#{propertyController.priceTypeId}" style="width:150px">
+							<f:selectItem itemLabel="Ücretlendirme Tipi Seçiniz..." itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{propertyController.priceTypeList}" var="priceType" itemLabel="#{priceType.name}" itemValue="#{priceType.id}" />
+							<f:ajax render="priceCalculateMath" />
+						</p:selectOneMenu>
+						
+						<h:outputLabel for="priceCalculateMath" value="Ücret Hesaplama Metodu:" style="font-weight:bold"  />
+						<p:inputText id="priceCalculateMath" value="#{propertyController.property.priceCalculateMath}" size="50" 
+									 readonly="#{propertyController.priceTypeId != 2}" />
+						
+	
+						
+	
+						<h:outputLabel for="price" value="Birim Fiyat:" style="font-weight:bold" rendered="#{propertyController.propertyTypeId ne 3}"/>
+						<p:inputNumber id="price" value="#{propertyController.property.price}" rendered="#{propertyController.propertyTypeId ne 3}"
+									   symbol=" TL" symbolPosition="s" decimalSeparator="," thousandSeparator="." />
+	
+						<p:commandButton value="Özellik Liste Eleman Yönetimi" process="@this" 
+										 rendered="#{propertyController.propertyTypeId eq 3 and propertyController.property.id>0}"
+										 action="mngPropertyLovDef">
+							<f:param name="propertyId" value="#{propertyController.property.id}" />
+						</p:commandButton>
+	
+					</h:panelGrid>
+				</h:panelGroup>
+			</p:fieldset>
+			
+			
+			
+			
+			<p:commandButton value="Geri" process="@this"  action="back"/>
+			<p:commandButton value="Kaydet" update="createPropertyForm" process="@form" icon="ui-icon-check" action="#{propertyController.saveProperty()}"/>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

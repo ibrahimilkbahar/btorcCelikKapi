@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+      	http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+	
+	<view-state id="listOffering">
+		<transition on="createOffering" to="createUpdateOffering">
+			<evaluate expression="offeringController.initializeCreateOffering()" />
+		</transition>
+		<transition on="detailOffering" to="createUpdateOffering">
+			<evaluate expression="offeringController.initializeDetailOffering()" />
+		</transition>
+	</view-state>
+	
+
+	
+	<view-state id="createUpdateOffering">
+		<transition on="back" to="listOffering">
+			<evaluate expression="offeringController.initOfferingList()" />
+		</transition>
+		<transition on="offeringSaved" to="createUpdateOffering"/>
+			
+	</view-state>
+	
+	<end-state id="finish"/>
+</flow>

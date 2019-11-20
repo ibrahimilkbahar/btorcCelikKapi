@@ -1,0 +1,225 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">
+        Sunu Tanımlama
+    </ui:define>
+
+
+
+	<ui:define name="implementation">
+		<h:form id="createOfferingForm">
+			<p:fieldset legend="Sunu Bilgileri"  collapsed="false" toggleable="true" toggleSpeed="500">
+				<h:panelGrid columns="2" cellpadding="15">
+					<h:panelGrid columns="2" cellpadding="5">
+						<h:outputLabel for="name" value="Sunu Adı:" style="font-weight:bold" />
+						<p:inputText id="name" value="#{offeringController.offering.name}" size="60" />
+	
+						<h:outputLabel for="code" value="Sunu Kodu:" style="font-weight:bold" />
+						<p:inputText id="code" value="#{offeringController.offering.code}" size="60"/>
+	
+						<h:outputLabel for="description" value="Notlar:" style="font-weight:bold" />
+						<p:inputTextarea id="description" value="#{offeringController.offering.description}" rows="5" cols="60" maxlength="250" autoResize="false" />
+				
+						<h:outputLabel for="imagePath" value="Sunu Resim:" style="font-weight:bold" />
+						<p:inputText id="imagePath" value="#{offeringController.offering.imagePath}" size="60"/>
+						
+						<h:outputLabel for="isSaleable" value="Satılabilir/Satılamaz:" style="font-weight:bold" />
+						<p:selectBooleanButton id="isSaleable" value="#{offeringController.offering.isSaleable}" onLabel="Satılabilir" offLabel="Satılamaz" />
+				
+						<p:outputLabel for="productTypeId" value="Ürün Tipi:" style="font-weight:bold" />
+						<p:selectOneMenu id="productTypeId" value="#{offeringController.productTypeId}" style="width:180px;"  >
+							<f:selectItems value="#{offeringController.productTypeList}" var="productType" itemLabel="#{productType.name}" itemValue="#{productType.id}" />			
+						</p:selectOneMenu>
+						
+	 					<p:outputLabel for="productSurfaceTypeId" value="Yüzey Tipi:" style="font-weight:bold" />
+						<p:selectOneMenu id="productSurfaceTypeId" value="#{offeringController.productSurfaceTypeId}" style="width:180px;"  >
+							<f:selectItems value="#{offeringController.productSurfaceTypeList}" var="productSurfaceType" itemLabel="#{productSurfaceType.name}" itemValue="#{productSurfaceType.id}" />			
+						</p:selectOneMenu>
+						
+						<p:outputLabel for="productWingTypeId" value="Kanat Tipi:" style="font-weight:bold" />
+						<p:selectOneMenu id="productWingTypeId" value="#{offeringController.productWingTypeId}" style="width:180px;"  >
+							<f:selectItems value="#{offeringController.productWingTypeList}" var="productWingType" itemLabel="#{productWingType.name}" itemValue="#{productWingType.id}" />			
+						</p:selectOneMenu>
+						
+						
+						
+					</h:panelGrid>
+
+					<p:graphicImage  name="main/images/kapiResim/#{offeringController.offering.imagePath}" height="280px" width="280px"/>	
+				</h:panelGrid>
+				<p:commandButton value="Geri" process="@this"  action="back"/>
+				<p:commandButton value="Kaydet" update="createOfferingForm" process="createOfferingForm" icon="ui-icon-check" action="#{offeringController.saveOffering()}"/>
+			</p:fieldset>
+		</h:form>
+		<h:form id="createOfferingPropvalsForm" rendered="#{offeringController.offering.id >0}">
+			<p:fieldset legend="Sunu Özellik Dağılımı" collapsed="false" toggleable="true" toggleSpeed="500">
+	 			<h:panelGrid columns="2" cellpadding="5">
+					<p:fieldset legend="Metal Özellik Gurubu" id="MetalPropertyFieldList" 
+								toggleable="false" collapsed="false" rendered="#{offeringController.offering.id >0}">
+						<p:pickList id="propertyListMetal"
+							value="#{offeringController.propertyDualListMetal}"
+							var="property"
+							itemLabel="#{property.name}"
+							itemValue="#{property.id}">
+						</p:pickList>
+					</p:fieldset>
+					<p:fieldset legend="Ahşap Özellik Gurubu" id="woodenPropertyFieldList" 
+								toggleable="false" collapsed="false" rendered="#{offeringController.offering.id >0}">
+						<p:pickList id="propertyListWooden"
+							value="#{offeringController.propertyDualListWooden}"
+							var="property"
+							itemLabel="#{property.name}"
+							itemValue="#{property.id}">
+						</p:pickList>
+					</p:fieldset>
+					<p:fieldset legend="Aksesuar Özellik Gurubu" id="accessoryPropertyFieldList" 
+								toggleable="false" collapsed="false" rendered="#{offeringController.offering.id >0}">
+						<p:pickList id="propertyListAccessory"
+							value="#{offeringController.propertyDualListAccessory}"
+							var="property"
+							itemLabel="#{property.name}"
+							itemValue="#{property.id}">
+						</p:pickList>
+					</p:fieldset>
+					<p:fieldset legend="Diğer Özellikler" id="otherPropertyFieldList" 
+								toggleable="false" collapsed="false" rendered="#{offeringController.offering.id >0}">
+						<p:pickList id="propertyListOther"
+							value="#{offeringController.propertyDualListOther}"
+							var="property"
+							itemLabel="#{property.name}"
+							itemValue="#{property.id}">
+						</p:pickList>
+					</p:fieldset>
+	 			</h:panelGrid>
+				<p:commandButton value="Sunu Özellik Dağılımını Kaydet" id="saveOfferingPropvalList" 
+				 					process="createOfferingPropvalsForm" update="createOfferingPropvalsForm,growl,offeringPropvalUpdateForm" 
+        					 		actionListener="#{offeringController.saveOfferingPropvalList}" styleClass="ui-priority-primary" />
+			</p:fieldset>
+		</h:form>
+		
+		<h:form id="offeringPropvalUpdateForm" rendered="#{offeringController.offering.id >0}">
+			<p:dataTable id="offeringPropvalDT" var="offeringPropval" 
+				value="#{offeringController.offeringPropvalList}" 
+				reflow="true"
+				rows="100" 
+				emptyMessage="Sunu Özellikleri bulunamadı.">
+				<f:facet name="header">
+					Sunu Özellik Detay Listesi
+				</f:facet>
+				
+				<p:column headerText="Özellik Grubu">
+					<h:outputText value="#{offeringPropval.propertyValue.property.propertyGroup.name}" />
+				</p:column>
+				<p:column headerText="Özellik Tipi">
+					<h:outputText value="#{offeringPropval.propertyValue.property.propertyType.name}" />
+				</p:column>
+				<p:column headerText="Özellik Adı">
+					<h:outputText value="#{offeringPropval.propertyValue.property.name}" />
+				</p:column>
+				<p:column headerText="Özellik Kodu">
+					<h:outputText value="#{offeringPropval.propertyValue.property.code}" />
+				</p:column>
+				<p:column headerText="Zorunluluk">
+					<h:outputText value="#{offeringPropval.isMondatory?'Zorunlu':'Zorunlu Değil'}" />
+				</p:column>
+				<p:column headerText="Raporda Gösterim">
+					<h:outputText value="#{offeringPropval.isVisibleOnReport?'Raporda Gösterilsin':'Raporda Gösterilmesin'}" />
+				</p:column>
+				<p:column headerText="Salt Okunur">
+					<h:outputText value="#{offeringPropval.isReadonly?'Salt Okunur':'Değiştirilebilir'}" />
+				</p:column>
+				
+				<p:column style="width:32px;text-align: center">
+		             <p:commandButton update=":offeringPropvalUpdateForm:offeringPropvalOP" 
+		             				action="#{offeringController.loadOfferingProperty(offeringPropval)}" 
+		             				oncomplete="PF('offeringPropvalDLG').show()" icon="ui-icon-search" title="View">
+		                <f:setPropertyActionListener value="#{offeringPropval}" target="#{offeringController.newOfferingPropval}" />
+		            </p:commandButton>
+		        </p:column>
+			</p:dataTable>
+			
+			<p:dialog header="Özellik Seçim Eleman Bilgisi" widgetVar="offeringPropvalDLG" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+		        <p:outputPanel id="offeringPropvalOP" style="text-align:left;">
+		        	<p:fieldset legend="Özellik Davranış Bilgileri"  collapsed="false" toggleable="false">
+					<h:panelGrid columns="2" cellpadding="5">
+
+						<h:outputLabel for="isMondatory" value="Zorunlu/Zorunlu Değil:" style="font-weight:bold" />
+						<p:selectBooleanButton id="isMondatory" value="#{offeringController.newOfferingPropval.isMondatory}" onLabel="Zorunlu" offLabel="Zorunlu Değil" />
+						
+						<h:outputLabel for="isVisibleOnReport" value="Raporda Görünsün/Raporda Görünmesin:" style="font-weight:bold" />
+						<p:selectBooleanButton id="isVisibleOnReport" value="#{offeringController.newOfferingPropval.isVisibleOnReport}" onLabel="Raporda Görünsün" offLabel="Raporda Görünmesin" />
+						
+						<h:outputLabel for="isReadonly" value="Salt Okunur/Değiştirilebilir:" style="font-weight:bold" />
+						<p:selectBooleanButton id="isReadonly" value="#{offeringController.newOfferingPropval.isReadonly}" onLabel="Salt Okunur" offLabel="Değiştirilebilir" />						
+		            </h:panelGrid>
+		            </p:fieldset>
+		            <p:fieldset legend="Özellik İlk Değeri"  collapsed="false" toggleable="false">
+		            <table>
+						<col width="130"/>
+						<col width="200"/>
+						<tr>
+			 				<td>
+								<p:outputLabel value="#{offeringController.newOfferingPropval.propertyValue.property.name}" style="width:150px;word-wrap:initial"  rendered="#{offeringController.newOfferingPropval.propertyValue.property.propertyType.code == 'TEXT'}" />
+								<p:outputLabel value="#{offeringController.newOfferingPropval.propertyValue.property.name}" style="width:150px;word-wrap:initial"  rendered="#{offeringController.newOfferingPropval.propertyValue.property.propertyType.code == 'NUMBER'}" />
+								<p:outputLabel value="#{offeringController.newOfferingPropval.propertyValue.property.name}" style="width:150px;word-wrap:initial"  rendered="#{offeringController.newOfferingPropval.propertyValue.property.propertyType.code == 'DATE'}" />
+								<p:outputLabel value="#{offeringController.newOfferingPropval.propertyValue.property.name}" style="width:150px;word-wrap:initial"  rendered="#{offeringController.newOfferingPropval.propertyValue.property.propertyType.code == 'LIST'}" />
+								<p:outputLabel value="#{offeringController.newOfferingPropval.propertyValue.property.name}" style="width:150px;word-wrap:initial"  rendered="#{offeringController.newOfferingPropval.propertyValue.property.propertyType.code == 'PASSWORD'}" />
+								<p:outputLabel value="#{offeringController.newOfferingPropval.propertyValue.property.name}" style="width:150px;word-wrap:initial"  rendered="#{offeringController.newOfferingPropval.propertyValue.property.propertyType.code == 'MONEY'}" />
+								<p:outputLabel value="#{offeringController.newOfferingPropval.propertyValue.property.name}" style="width:150px;word-wrap:initial"  rendered="#{offeringController.newOfferingPropval.propertyValue.property.propertyType.code == 'COLOUR'}" />
+								<p:outputLabel value="#{offeringController.newOfferingPropval.propertyValue.property.name}" style="width:150px;word-wrap:initial"  rendered="#{offeringController.newOfferingPropval.propertyValue.property.propertyType.code == 'FILE'}" />
+							</td>
+							<td>
+								<p:inputText value="#{offeringController.newOfferingPropval.propertyValue.valueText}" 
+											 rendered="#{offeringController.newOfferingPropval.propertyValue.property.propertyType.code == 'TEXT'}" />
+											 
+								<p:password  value="#{offeringController.newOfferingPropval.propertyValue.valueText}" 
+											rendered="#{offeringController.newOfferingPropval.propertyValue.property.propertyType.code == 'PASSWORD'}" /> 
+											
+								<p:calendar value="#{offeringController.newOfferingPropval.propertyValue.valueDate}"
+											pattern="dd/MM/yyyy HH:mm"
+											rendered="#{offeringController.newOfferingPropval.propertyValue.property.propertyType.code == 'DATE'}">
+											<f:convertDateTime type="both" pattern="dd/MM/yyyy HH:mm" />
+								</p:calendar> 
+								
+								<p:selectOneMenu value="#{offeringController.newOfferingPropval.propertyValue.propertyLov.id}"
+											rendered="#{offeringController.newOfferingPropval.propertyValue.property.propertyType.code == 'LIST'}"
+											style="width:130px">
+											<f:selectItem itemLabel="Seçiniz" itemValue="0" noSelectionOption="true" />
+											<f:selectItems value="#{offeringController.newOfferingPropval.propertyValue.property.propertyLovDef.propertyLovList}" var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+								</p:selectOneMenu>
+								 
+								<p:inputNumber value="#{offeringController.newOfferingPropval.propertyValue.valueNumber}" 
+											   rendered="#{offeringController.newOfferingPropval.propertyValue.property.propertyType.code == 'MONEY'}" 
+											   symbol=" TL" 
+											   symbolPosition="s" 
+											   decimalSeparator="," 
+											   thousandSeparator="." />
+											   
+								<p:inputNumber value="#{offeringController.newOfferingPropval.propertyValue.valueNumber}" 
+											   rendered="#{offeringController.newOfferingPropval.propertyValue.property.propertyType.code == 'NUMBER'}"
+											   decimalSeparator="" 
+											   thousandSeparator="" 
+											   minValue="-10000000000000" 
+											   maxValue="10000000000000"/>
+							</td>
+						</tr>
+					</table>
+		            </p:fieldset>
+		            
+		            <p:commandButton value="Özellik Seçim Elemanı Kaydet" id="saveOfferingProperty" process="offeringPropvalUpdateForm" update="offeringPropvalDT" 
+		            				oncomplete="PF('offeringPropvalDLG').hide();"
+		            				actionListener="#{offeringController.saveOfferingProperty}" styleClass="ui-priority-primary" />
+		        </p:outputPanel>
+		    </p:dialog>
+		</h:form>
+		
+		
+	</ui:define>
+</ui:composition>

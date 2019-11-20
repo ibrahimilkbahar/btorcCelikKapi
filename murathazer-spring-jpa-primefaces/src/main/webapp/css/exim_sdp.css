@@ -1,0 +1,94 @@
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-justift {
+    text-align: justify;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center
+}
+
+.highlightPassiveRow {
+    color: red;
+}
+
+.boldLabel
+{
+    font-weight: bold;
+}
+
+.white
+{
+    color: white;
+}
+
+.disabled
+{
+    opacity: .35;
+}
+
+.sessionIdPanel
+{
+    display: block;
+    position: fixed;
+    top: 5px;
+    right: 2%;
+    font-weight: bold;
+    color: white;
+    font-size: 12px;
+    z-index: 999;
+}
+
+.hide-head table thead{
+    display: none;
+}
+
+/*style for select input field*/
+.md-selectfield {
+    display: block;
+    position: relative;
+}
+
+.md-selectfield .selectlabel {
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    top: -20px;
+    left: 0px;
+    font-size: 12px;
+    color: #3F51B5;
+}
+
+body .md-selectfield input.ui-state-error ~ label {
+    color: #e62a10;
+}
+
+body .md-selectfield .ui-message.ui-message-error {
+    background-color: transparent;
+    border: 0 none;
+    margin: 0px;
+    color: #e62a10;
+    font-size: 12px;
+}
+
+body .md-selectfield .ui-message.ui-message-error .ui-message-error-icon {
+    color: #e62a10;
+    font-size: 15px;
+    top: 2px;
+}
+
+/* detay gird */
+.detay-grid .md-selectfield{
+    border-bottom: groove 1px;
+}

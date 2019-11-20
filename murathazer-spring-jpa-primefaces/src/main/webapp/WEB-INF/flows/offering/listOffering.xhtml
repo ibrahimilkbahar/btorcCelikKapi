@@ -1,0 +1,93 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">
+        Ürün Sorgulama
+    </ui:define>
+
+
+
+	<ui:define name="implementation">
+		<h:form>
+			<p:commandButton action="createOffering" value="Yeni Ürün Oluştur" />
+			
+			<p:dataTable var="offering" 
+				value="#{offeringController.offeringList}"
+				widgetVar="offeringTable"
+				emptyMessage="Aranan kriterlere göre özellik bulunamadı..."
+				rows="80">
+
+				 
+
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton action="detailOffering" icon="ui-icon-search" title="View">
+						<f:param name="offeringId" value="#{offering.id}" />
+					</p:commandButton>
+				</p:column>
+				
+				<p:column headerText="Ürün Resmi" width="150">
+					<p:graphicImage  name="main/images/kapiResim/#{offering.imagePath}" height="150px" width="150px" />
+				</p:column>
+				
+				<p:column filterBy="#{offering.productType.id}" headerText="Ürün Tipi"  filterMatchMode="exact">
+		            <f:facet name="filter">
+		                <p:selectOneMenu label="Ürün Tipleri" onchange="PF('offeringTable').filter()">
+		                	<f:selectItem itemLabel="Ürün Tipi Seçiniz" itemValue="#{null}" noSelectionOption="true" />
+		                    <f:selectItems value="#{offeringController.productTypeList}" var="productType" itemLabel="#{productType.name}" itemValue="#{productType.id}" />
+		                </p:selectOneMenu>
+		            </f:facet>
+		            <h:outputText value="#{offering.productType.name}" />
+		        </p:column>
+		         
+				<p:column filterBy="#{offering.productWingType.id}" headerText="Kanat Tipi"  filterMatchMode="exact">
+		            <f:facet name="filter">
+		                <p:selectOneMenu label="Kanat Tipleri" onchange="PF('offeringTable').filter()">
+		                	<f:selectItem itemLabel="Kanat Tipi Seçiniz" itemValue="#{null}" noSelectionOption="true" />
+		                    <f:selectItems value="#{offeringController.productWingTypeList}" var="productWingType" itemLabel="#{productWingType.name}" itemValue="#{productWingType.id}" />
+		                </p:selectOneMenu>
+		            </f:facet>
+		            <h:outputText value="#{offering.productWingType.name}" />
+		        </p:column>
+				
+ 
+				<p:column filterBy="#{offering.productSurfaceType.id}" headerText="Yüzey Tipi"  filterMatchMode="exact">
+		            <f:facet name="filter">
+		                <p:selectOneMenu label="Yüzey Tipleri" onchange="PF('offeringTable').filter()">
+		                	<f:selectItem itemLabel="Yüzey Tipi Seçiniz" itemValue="#{null}" noSelectionOption="true" />
+		                    <f:selectItems value="#{offeringController.productSurfaceTypeList}" var="productSurfaceType" itemLabel="#{productSurfaceType.name}" itemValue="#{productSurfaceType.id}" />
+		                </p:selectOneMenu>
+		            </f:facet>
+		            <h:outputText value="#{offering.productSurfaceType.name}" />
+		        </p:column>
+				
+				
+				<p:column filterBy="#{offering.name}" headerText="Ürün Adı" filterMatchMode="contains">
+					<h:outputText value="#{offering.name}" />
+				</p:column>
+				
+				 
+				
+				<p:column filterBy="#{offering.isSaleable}" headerText="Satılabilir/Satılamaz/Hepsi" filterMatchMode="equals">
+					<f:facet name="filter">
+						<p:selectOneButton onchange="PF('offeringTable').filter()">
+							<f:converter converterId="javax.faces.Boolean" />
+							<f:selectItem itemLabel="Hepsi" itemValue="" />
+							<f:selectItem itemLabel="Satılabilir" itemValue="true" />
+							<f:selectItem itemLabel="Satılamaz" itemValue="false" />
+						</p:selectOneButton>
+					</f:facet>
+					<h:outputText value="#{offering.isSaleable ? 'Satılabilir': 'Satılamaz'}" />
+				</p:column>
+				
+				
+				
+				
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

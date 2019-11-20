@@ -1,0 +1,117 @@
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/WEB-INF/template.xhtml"
+>
+
+	<ui:define name="title">
+        Teklif Kalemi Detayları
+    </ui:define>
+
+
+
+	<ui:define name="implementation">
+		<h:form id="updateOrderOfferingPropertiesForm">
+			<p:growl autoUpdate="true" id="aaaaa" globalOnly="false"/>
+			<p:fieldset legend="Teklif Kalemi Özellikleri" collapsed="false" toggleable="true" toggleSpeed="500">
+				<h:panelGrid columns="3" cellpadding="5">
+					<p:fieldset legend="Genel Özellikler" collapsed="false" toggleable="true" toggleSpeed="500">
+						<h:panelGrid columns="2" cellpadding="5">
+							<p:outputLabel for="productType" value="Ürün Bilgisi:" style="font-weight:bold" />
+							<p:outputLabel id="productType" value="#{proposalApproveController.orderOffering.offering.productType.name} -
+																   #{proposalApproveController.orderOffering.offering.productSurfaceType.name} -
+																   #{proposalApproveController.orderOffering.offering.productWingType.name} - 
+																   #{proposalApproveController.orderOffering.productCaseType.name}" style="font-weight:bold" />
+
+							<p:outputLabel for="offeringName" value="Ürün Adı:" style="font-weight:bold" />
+							<p:outputLabel id="offeringName" value="#{proposalApproveController.orderOffering.offering.name}" style="font-weight:bold" />
+
+				 			<p:outputLabel for="dimension" value="Ürün Boyutu(En/Boy/Duvar):" style="font-weight:bold" />
+							<p:outputLabel id="dimension" value="#{proposalApproveController.orderOffering.productionWidth} /
+																 #{proposalApproveController.orderOffering.productionHeight} / 
+																 #{proposalApproveController.orderOffering.enteredDepth} " style="font-weight:bold" />
+
+							<p:outputLabel for="basePrice" value="Kasa Fiyatı:" style="font-weight:bold" />
+							<p:outputLabel id="basePrice" value="#{proposalApproveController.orderOffering.dimensionPrice}" style="font-weight:bold" />
+
+							<p:outputLabel for="instanceAmount" value="Birim Fiyat:" style="font-weight:bold" />
+							<p:outputLabel id="instanceAmount" value="#{proposalApproveController.orderOffering.instanceAmount}" style="font-weight:bold" />
+
+							<p:outputLabel for="instanceDiscount" value="Birim İndirim (%):" style="font-weight:bold" />
+							<p:outputLabel id="instanceDiscount" value="#{proposalApproveController.orderOffering.instanceDiscount}"/>
+
+							<p:outputLabel for="instanceIncrease" value="Ek Ücret:" style="font-weight:bold" />
+							<p:outputLabel id="instanceIncrease" value="#{proposalApproveController.orderOffering.instanceIncrease}"/>
+
+							<p:outputLabel for="quantity" value="Adet:" style="font-weight:bold" />
+							<p:outputLabel id="quantity" value="#{proposalApproveController.orderOffering.quantity}" />
+
+		            		<p:outputLabel for="description" value="Notlar:" style="font-weight:bold" />
+							<p:outputLabel id="description" value="#{proposalApproveController.orderOffering.description}" />
+
+						</h:panelGrid>
+					</p:fieldset>
+
+					<p:graphicImage id="doorImage" name="main/images/kapiResim/#{proposalApproveController.orderOffering.offering.imagePath}" height="280px" width="280px" />
+
+
+				</h:panelGrid>
+				<p:fieldset legend="Özellikler" collapsed="false" toggleable="true" toggleSpeed="500">
+					<table class="hovertable" style="width: 100%">
+						<col width="200" />
+						<col width="200"/>
+						<col width="200"/>
+						<col width="200"/>
+						<tr>
+							<th>Özellik Tipi</th>
+							<th>Özellik</th>
+							<th>Değer</th>
+							<th>Raporda Görünme</th>
+							<th>Fiyat Etkisi</th>
+							<th>Fiyat Tipi</th>
+							<th>Hesaplama Metodu</th>
+						</tr>
+
+						<c:forEach items="#{proposalApproveController.orderOffering.orderOfferingPropValList}" var="field" varStatus="status">
+							<tr onmouseover="this.style.backgroundColor='#d4e3c5';" onmouseout="this.style.backgroundColor='#d4e3e5';">
+								<td>
+									<p:outputLabel value="#{field.propertyValue.property.propertyGroup.name}" />
+								</td>
+				 				<td>
+									<p:outputLabel value="#{field.propertyValue.property.name}" />
+								</td>
+								<td>
+									<p:outputLabel value="#{field.propertyValue.propertyLov.name}" rendered="#{field.propertyValue.property.propertyType.code == 'LIST'}"/>
+									<p:outputLabel value="#{field.propertyValue.valueText}" rendered="#{field.propertyValue.property.propertyType.code == 'TEXT'}"/>
+									<p:outputLabel value="#{field.propertyValue.valueNumber}" rendered="#{field.propertyValue.property.propertyType.code == 'NUMBER'}"/>
+								</td>
+								<td>
+	 								<p:selectBooleanButton value="#{field.isVisibleOnReport}" onLabel="Raporda Görünsün" offLabel="Raporda Görünmesin" disabled="true" />
+								</td>
+								<td>
+	 								<p:outputLabel value="#{field.propertyValue.calculatedPrice}"/>
+								</td>
+								<td>
+	 								<p:outputLabel value="#{field.propertyValue.property.priceType.name}"/>
+								</td>
+								<td>
+	 								<p:outputLabel value="#{field.propertyValue.property.priceCalculateMath}"/>
+								</td>
+							</tr>
+						 </c:forEach>
+					</table>
+				</p:fieldset>
+			</p:fieldset>
+
+	            <p:commandButton value="Geri" process="@this"  action="back">
+	            	<f:param name="proposalId" value="#{proposalApproveController.proposalId}" />
+	            </p:commandButton>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

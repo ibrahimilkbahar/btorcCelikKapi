@@ -1,0 +1,270 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">
+        Teklif Detayları
+    </ui:define>
+
+
+
+	<ui:define name="implementation">
+		<h:form id="createOrderForm">
+			<p:tabView>
+    			<p:ajax event="tabChange" update="exportEmailForm" />
+		        <p:tab title="Teklif Bilgileri">
+		        	<h:form id="proposalInformationForm">
+			            <p:fieldset  collapsed="false" toggleable="false">
+							<h:panelGrid columns="3" cellpadding="5">
+								<h:panelGrid columns="2" cellpadding="5">
+									
+									<p:outputLabel for="proposalNo" value="Teklif Numarası:" style="font-weight:bold" />
+									<p:outputLabel   id="proposalNo"  value="#{proposalApproveController.proposal.proposalNo}" />
+									
+									<p:outputLabel for="createDate" value="Oluşturma Tarihi:" style="font-weight:bold" />
+									<p:outputLabel   id="createDate"  value="#{proposalApproveController.proposal.createDate}">
+										<f:convertDateTime pattern="dd-MM-yyyy" />
+									</p:outputLabel>
+									
+									<p:outputLabel for="finalDiscount" value="Genel İndirim (%):" style="font-weight:bold" />
+									<p:outputLabel id="finalDiscount" value="#{proposalApproveController.proposal.order.finalDiscount}"/>
+									
+								</h:panelGrid>
+								<h:panelGrid columns="2" cellpadding="5">	
+									
+									<p:outputLabel for="customerId" value="Müşteri:" style="font-weight:bold"/>
+									<p:outputLabel id="customerId" value="#{proposalApproveController.proposal.order.customer.fullname}"/>
+									
+									<p:outputLabel for="customerAddressId" value="Teslimat Adresi:" style="font-weight:bold"/>
+									<p:outputLabel id="customerAddressId" value="#{proposalApproveController.proposal.order.deliveryAddress.addressName}"/>
+									
+									<p:outputLabel for="orderStatus" value="Teklif Statüsü:" style="font-weight:bold" />
+									<p:outputLabel   id="orderStatus"  value="#{proposalApproveController.proposal.order.orderStatus.name}" />
+								
+								</h:panelGrid>
+								<h:panelGrid columns="2" cellpadding="5">
+								
+									<p:outputLabel for="customerProjectId" value="Proje:" style="font-weight:bold"/>
+									<p:outputLabel id="customerProjectId" value="#{proposalApproveController.proposal.order.customerProject.projectName}"/>
+									
+									<p:outputLabel for="customerContactId" value="Kontak:" style="font-weight:bold"/>
+									<p:outputLabel id="customerContactId" value="#{proposalApproveController.proposal.order.customerContact.fullname}"/>
+									
+									<h:outputLabel for="rejectReason" value="Red Nedeni:" style="font-weight:bold" />
+									<p:inputTextarea id="rejectReason" value="#{proposalApproveController.proposal.order.rejectReason}" rows="2" cols="50" maxlength="400" autoResize="false" />
+									
+								</h:panelGrid>
+							</h:panelGrid>				 
+				           	<p:commandButton value="Teklifi Onayla" 
+				           					 rendered="#{proposalApproveController.proposal.order.orderStatus.code == 'SUBMITTED'}"
+					        				 process="proposalInformationForm" 
+											 update="createOrderForm,proposalOfferingListForm,growl" 
+				           					 actionListener="#{proposalApproveController.saveProposalStatusToApprove}"/>
+				           	<p:commandButton value="Teklifi Red Et" 
+				           					 rendered="#{proposalApproveController.proposal.order.orderStatus.code == 'SUBMITTED'}"
+					        				 process="proposalInformationForm" 
+											 update="createOrderForm,proposalOfferingListForm,growl" 
+				           					 actionListener="#{proposalApproveController.saveProposalStatusToReject}"/>
+				           					 
+				   
+						</p:fieldset>
+					</h:form>
+
+		        </p:tab>
+		        <p:tab title="Nakliye-Montaj Bilgisi">
+		        	<h:form id="transportAndInstallationForm">
+			        	<p:fieldset collapsed="false" toggleable="false">
+							<h:panelGrid columns="2" cellpadding="5">
+								<h:panelGrid columns="2" cellpadding="5">
+								
+									
+									<p:outputLabel for="transportAmount" value="Nakliye Maliyeti:" style="font-weight:bold" />
+									<p:outputLabel id="transportAmount" value="#{proposalApproveController.proposal.order.transportAmount} TL"/>
+									
+									<p:outputLabel for="transportDescription" value="Nakliye Notlar:" style="font-weight:bold" />
+									<p:outputLabel id="transportDescription" value="#{proposalApproveController.proposal.order.transportDescription}"/>
+										
+								</h:panelGrid>
+								<h:panelGrid columns="2" cellpadding="5">	
+			
+									
+									<p:outputLabel for="installationAmount" value="Montaj Maliyeti:" style="font-weight:bold" />
+									<p:outputLabel id="installationAmount" value="#{proposalApproveController.proposal.order.installationAmount} TL"/>
+										
+									<p:outputLabel for="installationDescription" value="Montaj Notlar:" style="font-weight:bold" />
+									<p:outputLabel id="installationDescription" value="#{proposalApproveController.proposal.order.installationDescription}"/>
+									
+								</h:panelGrid>
+							</h:panelGrid>
+						</p:fieldset>					 
+					</h:form>
+		        </p:tab>
+		        <p:tab title="Ödeme Bilgileri ">
+		        	<h:form id="paymentInfoForm">
+						<p:fieldset collapsed="false" toggleable="false">
+							<h:panelGrid columns="2" cellpadding="5">
+								<p:outputLabel for="paymentInformation" value="Ödeme Bilgileri:" style="font-weight:bold" />
+								<p:outputLabel id="paymentInformation"  value="#{proposalApproveController.proposal.order.paymentInformation}" />
+							</h:panelGrid>
+						</p:fieldset>					 
+					</h:form>
+				</p:tab>
+		        <p:tab title="Çıktı-Rapor İşlemleri">
+					<h:form id="exportEmailForm">
+						<p:fieldset collapsed="false" toggleable="false">
+							<h:panelGrid columns="3" cellpadding="5">
+								<h:panelGrid columns="2" cellpadding="5">
+									<p:outputLabel for="lastUpdateDate" value="Son Güncelleme Tarihi:" style="font-weight:bold" />
+									<p:outputLabel   id="lastUpdateDate"  value="#{proposalApproveController.proposal.lastUpdateDate}">
+										<f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
+									</p:outputLabel>
+									
+									<p:outputLabel for="lastSendDate" value="Son Gönderim Tarihi:" style="font-weight:bold" />
+									<p:outputLabel   id="lastSendDate"  value="#{proposalApproveController.proposal.lastSendDate}">
+										<f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
+									</p:outputLabel>
+								</h:panelGrid>
+								
+								<h:panelGrid columns="2" cellpadding="5">
+									<p:outputLabel for="revisionDate" value="Revizyon Tarihi:" style="font-weight:bold" />
+									<p:outputLabel   id="revisionDate"  value="#{proposalApproveController.proposal.revisionDate}">
+										<f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
+									</p:outputLabel>
+									
+									<p:outputLabel for="revisionNo" value="Revizyon No:" style="font-weight:bold" />
+									<p:outputLabel   id="revisionNo"  value="#{proposalApproveController.proposal.revisionNo}" />
+									
+									<p:outputLabel for="toEmail" value="Kontak Mail:" style="font-weight:bold" />
+									<p:outputLabel   id="toEmail"  value="#{proposalApproveController.proposal.order.customerContact.email}" size="40" />
+								</h:panelGrid>
+								
+								
+							</h:panelGrid>
+						</p:fieldset>
+					</h:form>
+				</p:tab>
+		    </p:tabView>
+		</h:form>
+		
+		
+		
+		
+		
+		<h:form id="proposalOfferingListForm">
+			<p:dataTable id="orderOfferingDT" var="orderOffering" 
+				value="#{proposalApproveController.orderOfferingList}" 
+				reflow="true"
+				rows="100" 
+				emptyMessage="Teklife eklenmiş Kapı Bulunamadı.">
+				<f:facet name="header">
+					Teklif Kalemleri
+				</f:facet>
+				<p:column headerText="Ürün Resmi" width="150">
+					<p:graphicImage  name="main/images/kapiResim/#{orderOffering.offering.imagePath}" height="150px" width="150px" />
+				</p:column>
+				<p:column headerText="Ürün Tipi" width="70">
+					<h:outputText value="#{orderOffering.offering.productType.name}" />
+				</p:column>
+				<p:column headerText="Yüzey Tipi" width="70">
+					<h:outputText value="#{orderOffering.offering.productSurfaceType.name}" />
+				</p:column>
+				<p:column headerText="Kanat Tipi" width="70">
+					<h:outputText value="#{orderOffering.offering.productWingType.name}" />
+				</p:column>
+				<p:column headerText="Ürün Adı">
+					<h:outputText value="#{orderOffering.offering.name}" />
+				</p:column>
+
+				<p:column headerText="Adet"  width="30">
+					<h:outputText value="#{orderOffering.quantity}" />
+				</p:column>
+				
+				<p:column headerText="En/Boy/Duvar" width="100">
+					<h:outputText value="#{orderOffering.productionWidth} / #{orderOffering.productionHeight} / #{orderOffering.enteredDepth}" />
+				</p:column>
+				
+				<p:column headerText="Birim Fiyat">
+					<h:outputText value="#{proposalApproveController.round(orderOffering.instanceAmount / proposalApproveController.proposal.order.currencyValue,2)} #{proposalApproveController.proposal.order.currencyCode}"   style="float:right"/>
+				</p:column>
+				
+				<p:column headerText="Birim İndirim">
+					<h:outputText value="#{proposalApproveController.round(orderOffering.instanceDiscount/ proposalApproveController.proposal.order.currencyValue,2)} #{proposalApproveController.proposal.order.currencyCode}" style="float:right"/>
+				</p:column>
+				
+				<p:column headerText="Ek Ücret">
+					<h:outputText value="#{proposalApproveController.round(orderOffering.instanceIncrease/ proposalApproveController.proposal.order.currencyValue,2)} #{proposalApproveController.proposal.order.currencyCode}" style="float:right"/>
+				</p:column>
+				
+				<p:column headerText="Toplam Fiyat">
+					<h:outputText value="#{proposalApproveController.round(orderOffering.totalAmount/ proposalApproveController.proposal.order.currencyValue,2)} #{proposalApproveController.proposal.order.currencyCode}" style="float:right"/>
+				</p:column>
+				
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton action="proposalOfferingDetail" icon="ui-icon-search" title="View">
+						<f:param name="orderOfferingId" value="#{orderOffering.id}" />
+					</p:commandButton>
+				</p:column>
+				
+				<p:columnGroup type="footer">
+		            <p:row>
+		                <p:column colspan="10" style="text-align:right" footerText="Kapı Toplam:" /><p:column footerText="#{proposalApproveController.getTotalCostOfOrderOfferings()} #{proposalApproveController.proposal.order.currencyCode}" style="text-align: right" />
+		            </p:row>
+		            <p:row>    
+		                <p:column colspan="10" style="text-align:right" footerText="Genel İndirim:" /><p:column footerText="-#{proposalApproveController.getFinalDiscount()} #{proposalApproveController.proposal.order.currencyCode}" style="text-align: right"/>
+		            </p:row>
+		            <p:row>
+		                <p:column colspan="10" style="text-align:right" footerText="Kurulum:" /><p:column footerText="#{proposalApproveController.getInstallationAmount()} #{proposalApproveController.proposal.order.currencyCode}" style="text-align: right" />
+		            </p:row>
+		            <p:row>    
+		                <p:column colspan="10" style="text-align:right" footerText="Nakliye:" /><p:column footerText="#{proposalApproveController.getTransportAmount()} #{proposalApproveController.proposal.order.currencyCode}" style="text-align: right"/>
+		            </p:row>
+		            <p:row>
+		                <p:column colspan="10" style="text-align:right" footerText="KDV:" /><p:column footerText="#{proposalApproveController.getTotalTax()} #{proposalApproveController.proposal.order.currencyCode}" style="text-align: right" />
+		            </p:row>
+		            <p:row>    
+		                <p:column colspan="10" style="text-align:right" footerText="Genel Toplam:" /><p:column footerText="#{proposalApproveController.getGeneralSum()} #{proposalApproveController.proposal.order.currencyCode}" style="text-align: right"/>
+		            </p:row>
+		        </p:columnGroup>
+		   	</p:dataTable>
+		</h:form>
+		<br/>
+		<h:form id="proposalHistoryForm">
+			<p:dataTable id="proposalHistoryDT" var="proposalHistory" 
+				value="#{proposalApproveController.proposalHistoryList}" 
+				scrollable="true" scrollHeight="300"
+				emptyMessage="Teklife ait Tarihçe Kayıtları Bulunamadı.">
+				<f:facet name="header">
+					Teklif Tarihçesi
+				</f:facet>
+				<p:column headerText="İşlem Tipi">
+					<h:outputText value="#{proposalHistory.operation}" />
+				</p:column>
+				
+				<p:column headerText="İşlem Bilgisi">
+					<h:outputText value="#{proposalHistory.operationInfo}" />
+				</p:column>
+				
+				<p:column headerText="Eski Değer">
+					<h:outputText value="#{proposalHistory.oldValue}" />
+				</p:column>
+
+				<p:column headerText="Yeni Değer">
+					<h:outputText value="#{proposalHistory.newValue}" />
+				</p:column>
+				
+				<p:column headerText="İşlem Tarihi">
+					<h:outputText value="#{proposalHistory.updateDate}" />
+				</p:column>
+				
+				<p:column headerText="Kullanıcı">
+					<h:outputText value="#{proposalHistory.user.fullname}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

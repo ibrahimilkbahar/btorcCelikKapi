@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+      	http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<view-state id="proposalList">
+		<transition on="proposalCreate" to="proposalCreate">
+			<evaluate expression="proposalCreateController.initialize()" />
+		</transition>
+		
+		<transition on="proposalUpdate" to="proposalUpdate">
+			<evaluate expression="proposalUpdateController.initialize()" />
+		</transition>
+	</view-state>
+	
+	<view-state id="proposalCreate">
+		<transition on="back" to="finish"/>
+
+		<transition on="proposalSaved" to="proposalUpdate">
+			<evaluate expression="proposalUpdateController.initialize()" />
+		</transition>
+	</view-state>
+	
+	<view-state id="proposalUpdate">
+		<transition on="back" to="finish"/>
+		
+		<transition on="proposalOfferingUpdate" to="proposalOfferingUpdate">
+			<evaluate expression="proposalOfferingUpdateController.initialize()" />
+		</transition>
+ 
+		<transition on="proposalSaved" to="proposalUpdate"/>
+	</view-state>
+	
+	 
+	
+	<view-state id="proposalOfferingUpdate">
+		<transition on="proposalOfferingSaved" to="proposalOfferingUpdate">
+			<evaluate expression="proposalOfferingUpdateController.initialize()" />
+		</transition>
+		 
+		<transition on="back" to="proposalUpdate">
+			<evaluate expression="proposalUpdateController.initialize()" />
+		</transition>
+	</view-state>
+	
+	<end-state id="finish"/>
+</flow>

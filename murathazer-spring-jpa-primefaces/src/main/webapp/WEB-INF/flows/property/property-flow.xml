@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+      	http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+	
+	<view-state id="listProperties">
+		<transition on="createProperty" to="createUpdateProperty">
+			<evaluate expression="propertyController.initializeCreateProperty()" />
+		</transition>
+		<transition on="detailProperty" to="createUpdateProperty">
+			<evaluate expression="propertyController.initializeDetailProperty()" />
+		</transition>
+	</view-state>
+	
+
+	
+	<view-state id="createUpdateProperty">
+		<transition on="back" to="listProperties">
+			<evaluate expression="propertyController.initPropertyList()" />
+		</transition>
+		<transition on="mngPropertyLovDef" to="mngPropertyLovDef">
+			<evaluate expression="propertyLovDefController.initializePropertyLovDef()" />
+		</transition>
+		<transition on="propertySaved" to="createUpdateProperty"/>
+	</view-state>
+	
+	<view-state id="mngPropertyLovDef">
+		<transition on="propertyLovDefSaved" to="mngPropertyLovDef"/>
+	</view-state>
+	
+	<end-state id="finish"/>
+</flow>

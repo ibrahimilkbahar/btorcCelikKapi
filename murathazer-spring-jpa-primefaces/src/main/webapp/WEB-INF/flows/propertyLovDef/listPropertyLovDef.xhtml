@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">
+        Özellik Seçim Listesi Sorgulama
+    </ui:define>
+    
+	<ui:define name="implementation">
+		<h:form>
+			<p:commandButton action="createPropertyLovDef" value="Yeni Özellik Seçim Listesi Oluştur" />
+			
+			<p:dataTable var="propertyLovDef" 
+				value="#{propertyLovDefController.propertyLovDefList}"
+				widgetVar="propertyLovDefTable"
+				emptyMessage="Aranan kriterlere göre özellik Seçim Listesi bulunamadı..."
+				rows="20"
+                paginator="true"
+                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                rowsPerPageTemplate="20,40,60,80,100">
+
+				
+				
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton action="detailPropertyLovDef" icon="ui-icon-search" title="View">
+						<f:param name="propertyLovDefId" value="#{propertyLovDef.id}" />
+					</p:commandButton>
+				</p:column>
+				
+				<p:column filterBy="#{propertyLovDef.name}" headerText="Özellik Seçim Listesi Adı" filterMatchMode="contains">
+					<h:outputText value="#{propertyLovDef.name}" />
+				</p:column>
+				
+				<p:column filterBy="#{propertyLovDef.code}" headerText="Özellik Seçim Listesi Kodu" filterMatchMode="contains">
+					<h:outputText value="#{propertyLovDef.code}" />
+				</p:column>
+				
+				
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

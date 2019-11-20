@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">
+        Teklif Onaylama
+    </ui:define>
+
+
+
+	<ui:define name="implementation">
+		<h:form>
+			 
+			<p:dataTable id="proposalList" var="proposal" 
+				value="#{proposalApproveController.proposalApproveList}"
+				widgetVar="proposalTable"
+				emptyMessage="Aranan kriterlere göre Teklif bulunamadı..."
+				rows="20"
+                paginator="true"
+                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                rowsPerPageTemplate="20,40,60,80,100">
+
+				
+				
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton action="proposalApprove" icon="ui-icon-search" title="View">
+						<f:param name="proposalId" value="#{proposal.id}" />
+					</p:commandButton>
+				</p:column>
+				
+				<p:column filterBy="#{proposal.proposalNo}" headerText="Teklif Numarası" filterMatchMode="contains">
+					<h:outputText value="#{proposal.proposalNo}" />
+				</p:column>
+				
+				<p:column filterBy="#{proposal.order.orderStatus.name}" headerText="Teklif Statüsü" filterMatchMode="contains">
+					<h:outputText value="#{proposal.order.orderStatus.name}" />
+				</p:column>
+
+				<p:column filterBy="#{proposal.order.customer.fullname}" headerText="Müşteri Ünvanı" filterMatchMode="contains">
+					<h:outputText value="#{proposal.order.customer.fullname}" />
+				</p:column>
+				
+				<p:column headerText="Teklif Oluşturma Tarihi">
+					<h:outputText value="#{proposal.createDate}" />
+				</p:column>
+
+				<p:column filterBy="#{proposal.order.salesResponsible.fullname}" headerText="Kullanıcı" filterMatchMode="contains">
+					<h:outputText value="#{proposal.order.salesResponsible.fullname}" />
+				</p:column>
+				
+				<p:column filterBy="#{proposal.order.deliveryAddress.addressText}" headerText="Adres" filterMatchMode="contains">
+					<h:outputText value="#{proposal.order.deliveryAddress.addressText}" />
+				</p:column>
+				
+				<p:column filterBy="#{proposal.order.customerProject.projectName}" headerText="Proje" filterMatchMode="contains">
+					<h:outputText value="#{proposal.order.customerProject.projectName}" />
+				</p:column>
+				
+				<p:column filterBy="#{proposal.order.customerContact.fullname}" headerText="Kontak" filterMatchMode="contains">
+					<h:outputText value="#{proposal.order.customerContact.fullname}" />
+				</p:column>
+				
+				
+				
+
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,63 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">
+        Teklif Oluşturma
+    </ui:define>
+
+
+
+	<ui:define name="implementation">
+		<h:form id="createProposalForm" title="aaaa">
+			<p:fieldset legend="Teklif Bilgileri" collapsed="false" toggleable="true" toggleSpeed="500">
+			 	<h:panelGrid columns="2"  cellpadding="5">
+					
+					<h:outputLabel for="createDate" value="Oluşturma Tarihi:" style="font-weight:bold" />
+					<p:inputText   id="createDate"  value="#{proposalCreateController.proposal.createDate}" readonly="true">
+						<f:convertDateTime pattern="dd-MM-yyyy" />
+					</p:inputText>
+					
+					<p:outputLabel for="customerId" value="Müşteri:" style="font-weight:bold"/>
+					<p:selectOneMenu id="customerId" value="#{proposalCreateController.customerId}" style="width:150px" required="true">
+						<p:ajax event="change" update="customerAddressId,customerProjectId,customerContactId" listener="#{proposalCreateController.onCustomerChange}" />
+						<f:selectItem itemLabel="Müşteri Seçiniz..." itemValue="" noSelectionOption="true" />
+						<f:selectItems value="#{proposalCreateController.customerList}" var="customer" itemLabel="#{customer.fullname}" itemValue="#{customer.id}" />
+					</p:selectOneMenu>
+					
+					<p:outputLabel for="customerAddressId" value="Teslimat Adresi:" style="font-weight:bold"/>
+					<p:selectOneMenu id="customerAddressId" value="#{proposalCreateController.deliveryAddressId}" style="width:150px" required="true">
+						<f:selectItem itemLabel="Adres Seçiniz..." itemValue="" noSelectionOption="true" />
+						<f:selectItems value="#{proposalCreateController.customerAddressList}" var="address" itemLabel="#{address.addressName}" itemValue="#{address.id}" />
+					</p:selectOneMenu>
+							
+					<p:outputLabel for="customerProjectId" value="Proje:" style="font-weight:bold"/>
+					<p:selectOneMenu id="customerProjectId" value="#{proposalCreateController.customerProjectId}" style="width:150px">
+						<f:selectItem itemLabel="Proje Seçiniz..." itemValue="" noSelectionOption="true" />
+						<f:selectItems value="#{proposalCreateController.customerProjectList}" var="project" itemLabel="#{project.projectName}" itemValue="#{project.id}" />
+					</p:selectOneMenu>
+					
+					<p:outputLabel for="customerContactId" value="Kontak:" style="font-weight:bold"/>
+					<p:selectOneMenu id="customerContactId" value="#{proposalCreateController.customerContactId}" style="width:150px">
+						<f:selectItem itemLabel="Kontak Seçiniz..." itemValue="" noSelectionOption="true" />
+						<f:selectItems value="#{proposalCreateController.customerContactList}" var="contact" itemLabel="#{contact.fullname}" itemValue="#{contact.id}" />
+					</p:selectOneMenu>
+							
+					
+					
+					
+					
+					
+				</h:panelGrid>
+				<p:commandButton value="Geri" process="@this" action="back"/>
+				<p:commandButton value="Kaydet" action="#{proposalCreateController.saveProposal()}"/>
+			</p:fieldset>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

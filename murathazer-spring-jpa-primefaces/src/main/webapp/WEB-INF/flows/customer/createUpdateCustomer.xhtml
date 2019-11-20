@@ -1,0 +1,445 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">
+        #{customerDetailController.isCorporate==1 ? "Kurumsal Müşteri" : "Bireysel Müşteri"} 
+    </ui:define>
+
+
+
+	<ui:define name="implementation">
+		
+
+
+		<h:form id="createCustomerForm">
+			<p:fieldset legend="Bireysel Müşteri Bilgileri" id="customerIndividualInfo" rendered="#{customerDetailController.isCorporate==0}">
+				<h:panelGrid columns="2" cellpadding="5">
+					<h:outputLabel for="fullname" value="Müşteri Ad/Soyad:" style="font-weight:bold" />
+					<p:inputText id="fullname" value="#{customerDetailController.customer.fullname}" />
+	
+					<h:outputLabel for="individualEmail" value="E-Mail:" style="font-weight:bold" />
+					<p:inputText id="individualEmail" value="#{customerDetailController.customer.email}" />
+								
+					<h:outputLabel for="citizenId" value="TC Kimlik No:" style="font-weight:bold" />
+					<p:inputMask id="citizenId" value="#{customerDetailController.customer.citizenId}" mask="99999999999"/>
+					
+					<h:outputLabel for="individualCariCode" value="Müşteri Cari Kod:" style="font-weight:bold" />
+					<p:inputMask id="individualCariCode" value="#{customerDetailController.customer.cariCode}" mask="99999999999"/>
+					
+					<h:outputLabel for="personalPhone" value="Telefon:" style="font-weight:bold" />
+					<p:inputMask id="personalPhone" value="#{customerDetailController.customer.phone}" mask="(999) 999-9999" />
+	
+					<h:outputLabel for="individualDescription" value="Notlar:" style="font-weight:bold" />
+					<p:inputTextarea id="individualDescription" value="#{customerDetailController.customer.description}" rows="5" cols="30" maxlength="250" autoResize="false" />
+				</h:panelGrid>
+
+			</p:fieldset>
+			<p:fieldset legend="Kurumsal Müşteri Bilgileri" id="customerCorporateInfo" rendered="#{customerDetailController.isCorporate==1}">
+				<h:panelGrid columns="2" cellpadding="5">
+					<h:outputLabel for="companyName" value="Firma Adı:" style="font-weight:bold" />
+					<p:inputText id="companyName" value="#{customerDetailController.customer.fullname}" />
+	
+					<h:outputLabel for="email" value="E-Mail:" style="font-weight:bold" />
+					<p:inputText id="email" value="#{customerDetailController.customer.email}" />
+					
+					<h:outputLabel for="webUrl" value="Web Sitesi:" style="font-weight:bold" />
+					<p:inputText id="webUrl" value="#{customerDetailController.customer.webUrl}" />
+					
+					<h:outputLabel for="taxId" value="Vergi No:" style="font-weight:bold" />
+					<p:inputMask id="taxId" value="#{customerDetailController.customer.taxId}" mask="9999999999"/>
+					
+					<h:outputLabel for="taxOffice" value="Vergi Dairesi:" style="font-weight:bold" />
+					<p:inputText id="taxOffice" value="#{customerDetailController.customer.taxOffice}" />
+					
+					<h:outputLabel for="cariCode" value="Firma Cari Kod:" style="font-weight:bold" />
+					<p:inputText id="cariCode" value="#{customerDetailController.customer.cariCode}"/>
+					
+					<h:outputLabel for="companyPhone" value="Telefon:" style="font-weight:bold" />
+					<p:inputMask id="companyPhone" value="#{customerDetailController.customer.phone}" mask="(999) 999-9999" />
+	
+					<h:outputLabel for="companyFax" value="Fax:" style="font-weight:bold" />
+					<p:inputMask id="companyFax" value="#{customerDetailController.customer.fax}" mask="(999) 999-9999" />
+	
+					<h:outputLabel for="description" value="Notlar:" style="font-weight:bold" />
+					<p:inputTextarea id="description" value="#{customerDetailController.customer.description}" rows="5" cols="30" maxlength="250" autoResize="false" />
+				</h:panelGrid>
+
+			</p:fieldset>
+				<p:commandButton value="Geri" process="@this"  action="back"/>
+				<p:commandButton value="Kaydet" update="createCustomerForm,growl" icon="ui-icon-check" action="#{customerDetailController.saveCustomer()}"/>
+		</h:form>
+		<br></br>
+		<h:form id="customerContactForm" rendered="#{customerDetailController.customer.id >0 and customerDetailController.customer.isCorporate}">
+			<p:commandButton update=":customerContactForm:customerContactOP"  ajax="true"
+							action="#{customerDetailController.resetContact()}" 
+							oncomplete="PF('customerContactDLG').show()" value="Yeni Kontak"/>
+			<p:dataTable id="customerContactDT" var="contact" 
+				value="#{customerDetailController.customerContactList}" 
+				reflow="true"
+				rows="100" 
+				emptyMessage="Müşteri Kontakları bulunamadı.">
+				<f:facet name="header">
+					Müşteri Kontakları
+				</f:facet>
+				<p:column headerText="Kontak">
+					<h:outputText value="#{contact.fullname}" />
+				</p:column>
+
+				<p:column headerText="Cep Telefon">
+					<h:outputText value="#{contact.mobilePhone}" />
+				</p:column>
+				
+				<p:column headerText="Telefon">
+					<h:outputText value="#{contact.officePhone}" />
+				</p:column>
+
+				<p:column headerText="E-Mail">
+					<h:outputText value="#{contact.email}" />
+				</p:column>
+		        
+		        <p:column headerText="Pozisyonu">
+					<h:outputText value="#{contact.contactPosition.name}" />
+				</p:column>
+				
+		        <p:column style="width:32px;text-align: center">
+		             <p:commandButton update=":customerContactForm:customerContactOP" ajax="true"
+						              action="#{customerDetailController.loadContact(contact)}" 
+		             				  oncomplete="PF('customerContactDLG').show()" icon="ui-icon-search" title="View">
+		                <f:setPropertyActionListener value="#{contact}" target="#{customerDetailController.newCustomerContact}" />
+		            </p:commandButton>
+		        </p:column>
+				
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton update="customerContactDT" process="customerContactDT" icon="ui-icon-close" actionListener="#{customerDetailController.deleteContact(contact)}">
+						<p:confirm header="Müşteri Kontak Silinmesi" message="Müşteriye Ait Kontak Silinecektir Eminmisiniz??" icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="Evet" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="Hayır" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</p:column>
+			</p:dataTable>
+
+			
+			
+			<p:dialog header="Kontak Bilgisi" widgetVar="customerContactDLG" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+		        <p:outputPanel id="customerContactOP" style="text-align:left;">
+		            <h:panelGrid  columns="2" >
+		                <h:outputLabel for="contactFullname" value="Kontak Adı:" style="font-weight:bold" />
+						<p:inputText id="contactFullname" value="#{customerDetailController.newCustomerContact.fullname}" />
+		
+						<h:outputLabel for="mobilePhone" value="Cep Telefon:" style="font-weight:bold" />
+						<p:inputMask id="mobilePhone" value="#{customerDetailController.newCustomerContact.mobilePhone}" mask="(999) 999-9999" />
+						
+						<h:outputLabel for="officePhone" value="Sabit Telefon:" style="font-weight:bold" />
+						<p:inputMask id="officePhone" value="#{customerDetailController.newCustomerContact.officePhone}" mask="(999) 999-9999" />
+						
+						<h:outputLabel for="contactEmail" value="Email:" style="font-weight:bold" />
+						<p:inputText id="contactEmail" value="#{customerDetailController.newCustomerContact.email}" />
+						
+						<p:outputLabel for="contactPositionId" value="Pozisyon:" style="font-weight:bold"/>
+						<p:selectOneMenu id="contactPositionId" value="#{customerDetailController.contactPosition}" style="width:150px" >
+							<f:selectItem itemLabel="Pozisyon Seçiniz..." itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{customerDetailController.contactPositionList}" var="contactPosition" itemLabel="#{contactPosition.name}" itemValue="#{contactPosition.id}" />
+						</p:selectOneMenu>
+						
+		            </h:panelGrid>
+		            <p:commandButton value="Kontak Kaydet" id="saveContact" process="customerContactOP" update="customerContactDT" 
+		            				oncomplete="PF('customerContactDLG').hide();"
+		            				actionListener="#{customerDetailController.saveContact}" styleClass="ui-priority-primary" />
+		        </p:outputPanel>
+		    </p:dialog>
+		</h:form>
+		<br></br>
+		<h:form id="customerAddressForm" rendered="#{customerDetailController.customer.id >0}">
+			<p:commandButton update=":customerAddressForm:customerAddressOP"  ajax="true"
+							action="#{customerDetailController.resetAddress()}" 
+							oncomplete="PF('customerAddressDLG').show()" value="Yeni Adres"/>
+			<p:dataTable id="customerAddressDT" var="address" 
+				value="#{customerDetailController.customerAddressList}" 
+				reflow="true"
+				rows="100" 
+				emptyMessage="Müşteri Adresleri bulunamadı.">
+				<f:facet name="header">
+					Müşteri Adresleri
+				</f:facet>
+				<p:column headerText="Adres Adı">
+					<h:outputText value="#{address.addressName}" />
+				</p:column>
+				
+				<p:column headerText="Şehir">
+					<h:outputText value="#{address.district.city.name}" />
+				</p:column>
+				
+				<p:column headerText="İlçe">
+					<h:outputText value="#{address.district.name}" />
+				</p:column>
+				
+				<p:column headerText="Adres">
+					<h:outputText value="#{address.addressText}" />
+				</p:column>
+				
+				<p:column headerText="(Fatura / Sevkiyat) Adresi">
+					<h:outputText value="#{address.isCentralAddress ? 'Fatura' : 'Sevkiyat'}" />
+				</p:column>
+				
+				<p:column style="width:32px;text-align: center">
+		             <p:commandButton update=":customerAddressForm:customerAddressOP" ajax="true"
+						              action="#{customerDetailController.loadAddress(address)}" 
+		             				  oncomplete="PF('customerAddressDLG').show()" icon="ui-icon-search" title="View">
+		                <f:setPropertyActionListener value="#{address}" target="#{customerDetailController.newCustomerAddress}" />
+		            </p:commandButton>
+		        </p:column>
+				
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton update="customerAddressDT" process="customerAddressDT" icon="ui-icon-close" actionListener="#{customerDetailController.deleteAddress(address)}">
+						<p:confirm header="Müşteri Kontak Silinmesi" message="Müşteriye Ait Kontak Silinecektir Eminmisiniz??" icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="Evet" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="Hayır" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</p:column>
+			</p:dataTable>
+
+			
+			
+			<p:dialog header="Adres Bilgisi" widgetVar="customerAddressDLG" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+		        <p:outputPanel id="customerAddressOP" style="text-align:left;">
+		            <h:panelGrid  columns="2" >
+		                <h:outputLabel for="addressName" value="Adres Adı:" style="font-weight:bold" />
+						<p:inputText id="addressName" value="#{customerDetailController.newCustomerAddress.addressName}" />
+						
+						<h:outputLabel for="addressText" value="Adres:" style="font-weight:bold " />
+						<p:inputTextarea id="addressText" value="#{customerDetailController.newCustomerAddress.addressText}" rows="5" cols="30" maxlength="250" autoResize="false" />
+		
+						<h:outputLabel for="descriptionAdr" value="Açıklama:" style="font-weight:bold" />
+						<p:inputTextarea id="descriptionAdr" value="#{customerDetailController.newCustomerAddress.description}" rows="5" cols="30" maxlength="250" autoResize="false" />
+		
+						<h:outputLabel for="postCode" value="Posta Kodu:" style="font-weight:bold" />
+						<p:inputText id="postCode" value="#{customerDetailController.newCustomerAddress.postCode}"/>
+	
+						<h:outputLabel for="isCentralAddress" value="Fatura Adresi / Sevkiyat Adresi:" style="font-weight:bold" />
+						<p:selectBooleanButton id="isCentralAddress" value="#{customerDetailController.newCustomerAddress.isCentralAddress}" onLabel="Fatura Adresi" offLabel="Sevkiyat Adresi" />
+	
+						<p:outputLabel for="countryId" value="Ülke:" style="font-weight:bold"/>
+						<p:selectOneMenu id="countryId" value="#{customerDetailController.country}" style="width:150px" >
+							<p:ajax event="change" update="cityId" listener="#{customerDetailController.onCountryChange}" />
+							<f:selectItem itemLabel="Ülke Seçiniz..." itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{customerDetailController.countryList}" var="country" itemLabel="#{country.name}" itemValue="#{country.id}" />
+						</p:selectOneMenu>
+						
+						<p:outputLabel for="cityId" value="Şehir:" style="font-weight:bold"/>
+						<p:selectOneMenu id="cityId" value="#{customerDetailController.city}" style="width:150px">
+							<p:ajax event="change" update="districtId" listener="#{customerDetailController.onCityChange}" />
+							<f:selectItem itemLabel="Şehir Seçiniz..." itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{customerDetailController.cityList}" var="city" itemLabel="#{city.name}" itemValue="#{city.id}" />
+						</p:selectOneMenu>
+						
+						<p:outputLabel for="districtId" value="İlçe:" style="font-weight:bold"/>
+						<p:selectOneMenu id="districtId" value="#{customerDetailController.district}" style="width:150px">
+							<f:selectItem itemLabel="İlçe Seçiniz..." itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{customerDetailController.districtList}" var="district" itemLabel="#{district.name}" itemValue="#{district.id}" />
+						</p:selectOneMenu>
+		            </h:panelGrid>
+		            <p:commandButton value="Adres Kaydet" id="saveAddress" process="customerAddressOP" update="customerAddressDT" 
+		            				oncomplete="PF('customerAddressDLG').hide();"
+		            				actionListener="#{customerDetailController.saveAddress}" styleClass="ui-priority-primary" />
+		        </p:outputPanel>
+		    </p:dialog>
+		</h:form>
+		<br></br>
+		<h:form id="customerProjectForm" rendered="#{customerDetailController.customer.id >0 and customerDetailController.customer.isCorporate}">
+			<p:commandButton update=":customerProjectForm:customerProjectOP"  ajax="true"
+							action="#{customerDetailController.resetProject()}" 
+							oncomplete="PF('customerProjectDLG').show()" value="Yeni Proje"/>
+			<p:dataTable id="customerProjectDT" var="project" 
+				value="#{customerDetailController.customerProjectList}" 
+				reflow="true"
+				rows="100" 
+				emptyMessage="Müşteri Projeleri bulunamadı.">
+				<f:facet name="header">
+					Müşteri Projeleri
+				</f:facet>
+				
+				<p:column headerText="Proje Adı">
+					<h:outputText value="#{project.projectName}" />
+				</p:column>
+
+				<p:column headerText="Açıklama">
+					<h:outputText value="#{project.description}" />
+				</p:column>
+				
+				<p:column headerText="Proje Maliyeti">
+					<h:outputText value="#{project.amount} TL" />
+				</p:column>
+
+				<p:column headerText="Başlangıç Tarihi">
+					<h:outputText value="#{project.startDate}" >
+						<f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Tahmini Bitiş Tarihi">
+					<h:outputText value="#{project.estimatedEndDate}" >
+						<f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Proje Adresi">
+					<h:outputText value="#{project.projectAddress.addressName}" />
+				</p:column>
+				
+				<p:column style="width:32px;text-align: center">
+		             <p:commandButton update=":customerProjectForm:customerProjectOP" 
+		             				action="#{customerDetailController.loadProject(project)}" 
+		             				oncomplete="PF('customerProjectDLG').show()" icon="ui-icon-search" title="View">
+		                <f:setPropertyActionListener value="#{project}" target="#{customerDetailController.newCustomerProject}" />
+		            </p:commandButton>
+		        </p:column>
+				
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton update="customerProjectDT" process="customerProjectDT" icon="ui-icon-close" actionListener="#{customerDetailController.deleteProject(project)}">
+						<p:confirm header="Müşteri Proje Silinmesi" message="Müşteriye Ait Proje Silinecektir Eminmisiniz??" icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="Evet" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="Hayır" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</p:column>
+			</p:dataTable>
+
+			
+			
+			<p:dialog header="Proje Bilgisi" widgetVar="customerProjectDLG" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+		        <p:outputPanel id="customerProjectOP" style="text-align:left;">
+		            <h:panelGrid  columns="2" >
+		                <h:outputLabel for="projectName" value="Proje Adı:" style="font-weight:bold" />
+						<p:inputText id="projectName" value="#{customerDetailController.newCustomerProject.projectName}" />
+		
+						<h:outputLabel for="projectDescription" value="Notlar:" style="font-weight:bold" />
+						<p:inputTextarea id="projectDescription" value="#{customerDetailController.newCustomerProject.description}" rows="5" cols="30" maxlength="250" autoResize="false" />
+
+						<p:outputLabel for="projectAddressId" value="Proje Adresi:" style="font-weight:bold"/>
+						<p:selectOneMenu id="projectAddressId" value="#{customerDetailController.projectAddress}" style="width:150px" >
+							<f:selectItem itemLabel="Adres Seçiniz..." itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{customerDetailController.customerAddressList}" var="projectAddress" itemLabel="#{projectAddress.addressName}" itemValue="#{projectAddress.id}" />
+						</p:selectOneMenu>
+
+						<h:outputLabel for="projectAmount" value="Proje Maliyeti:" style="font-weight:bold" />
+						<p:inputNumber id="projectAmount" value="#{customerDetailController.newCustomerProject.amount}" symbol=" TL" symbolPosition="s" decimalSeparator="," thousandSeparator="." />
+	
+						<h:outputLabel for="startDate" value="Başlangıç Tarihi:" style="font-weight:bold" />
+						<p:calendar    id="startDate" value="#{customerDetailController.newCustomerProject.startDate}" locale="tr" pattern="dd-MM-yyyy" />
+
+						<h:outputLabel for="estimatedEndDate" value="Tahmini Bitiş Tarihi:" style="font-weight:bold" />
+						<p:calendar    id="estimatedEndDate" value="#{customerDetailController.newCustomerProject.estimatedEndDate}" locale="tr" pattern="dd-MM-yyyy" />
+		            </h:panelGrid>
+		            <p:commandButton value="Proje Kaydet" id="saveProject" process="customerProjectOP" update="customerProjectDT" 
+		            				oncomplete="PF('customerProjectDLG').hide();"
+		            				actionListener="#{customerDetailController.saveProject}" styleClass="ui-priority-primary" />
+		        </p:outputPanel>
+		    </p:dialog>
+		</h:form>
+		<br></br>
+		<h:form id="customerBankAccountForm" rendered="#{customerDetailController.customer.id >0 and customerDetailController.customer.isCorporate}">
+					<p:commandButton update=":customerBankAccountForm:customerBankAccountOP"  ajax="true"
+							action="#{customerDetailController.resetBankAccount()}" 
+							oncomplete="PF('customerBankAccountDLG').show()" value="Yeni Banka Hesabı"/>
+			<p:dataTable id="customerBankAccountDT" var="bankAccount" 
+				value="#{customerDetailController.customerBankAccountList}" 
+				reflow="true"
+				rows="100" 
+				emptyMessage="Müşteri Banka hesapları bulunamadı.">
+				<f:facet name="header">
+					Müşteri Banka Hesapları
+				</f:facet>
+				
+				<p:column headerText="Banka Hesabı Adı">
+					<h:outputText value="#{bankAccount.bankAccountName}" />
+				</p:column>
+
+				<p:column headerText="Açıklama">
+					<h:outputText value="#{bankAccount.description}" />
+				</p:column>
+				
+				<p:column headerText="IBAN">
+					<h:outputText value="#{bankAccount.IBAN}" />
+				</p:column>
+
+				<p:column headerText="Hesap Sahibi">
+					<h:outputText value="#{bankAccount.accountOwnerFullname}" />
+				</p:column>
+				
+				<p:column headerText="Banka Adı">
+					<h:outputText value="#{bankAccount.bankName}" />
+				</p:column>
+				
+				<p:column headerText="Şube Kodu">
+					<h:outputText value="#{bankAccount.branchCode}" />
+				</p:column>
+				
+				<p:column headerText="Hesap Numarası">
+					<h:outputText value="#{bankAccount.accountNumber}" />
+				</p:column>
+				
+				<p:column style="width:32px;text-align: center">
+		             <p:commandButton update=":customerBankAccountForm:customerBankAccountOP" 
+		             				action="#{customerDetailController.loadBankAccount(bankAccount)}" 
+		             				oncomplete="PF('customerBankAccountDLG').show()" icon="ui-icon-search" title="View">
+		                <f:setPropertyActionListener value="#{bankAccount}" target="#{customerDetailController.newCustomerBankAccount}" />
+		            </p:commandButton>
+		        </p:column>
+				
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton update="customerBankAccountDT" process="customerBankAccountDT" icon="ui-icon-close" actionListener="#{customerDetailController.deleteBankAccount(bankAccount)}">
+						<p:confirm header="Müşteri Banka Hesabı Silinmesi" message="Müşteriye Ait Banka Hesabı Silinecektir Eminmisiniz??" icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="Evet" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="Hayır" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</p:column>
+			</p:dataTable>
+
+			
+			
+			<p:dialog header="Banka Hesap Bilgisi" widgetVar="customerBankAccountDLG" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+		        <p:outputPanel id="customerBankAccountOP" style="text-align:left;">
+		            <h:panelGrid  columns="2" >
+		                <h:outputLabel for="bankAccountName" value="Banka Hesabı Adı:" style="font-weight:bold" />
+						<p:inputText id="bankAccountName" value="#{customerDetailController.newCustomerBankAccount.bankAccountName}" />
+		
+						<h:outputLabel for="bankAccountDescription" value="Notlar:" style="font-weight:bold" />
+						<p:inputTextarea id="bankAccountDescription" value="#{customerDetailController.newCustomerBankAccount.description}" rows="5" cols="30" maxlength="250" autoResize="false" />
+ 						
+ 						<h:outputLabel for="IBAN" value="IBAN:" style="font-weight:bold" />
+						<p:inputText id="IBAN" value="#{customerDetailController.newCustomerBankAccount.IBAN}" size="30" />
+		
+ 						<h:outputLabel for="accountOwnerFullname" value="Hesap Sahibi Tam Adı:" style="font-weight:bold" />
+						<p:inputText id="accountOwnerFullname" value="#{customerDetailController.newCustomerBankAccount.accountOwnerFullname}" />
+
+ 						<h:outputLabel for="bankName" value="Banka Adı:" style="font-weight:bold" />
+						<p:inputText id="bankName" value="#{customerDetailController.newCustomerBankAccount.bankName}" />
+
+ 						<h:outputLabel for="branchCode" value="Şube Kodu:" style="font-weight:bold" />
+						<p:inputText id="branchCode" value="#{customerDetailController.newCustomerBankAccount.branchCode}" />
+
+ 						<h:outputLabel for="accountNumber" value="Banka Hesap Numarası:" style="font-weight:bold" />
+						<p:inputText id="accountNumber" value="#{customerDetailController.newCustomerBankAccount.accountNumber}" />
+						
+		            </h:panelGrid>
+		            <p:commandButton value="Banka Hesabı Kaydet" id="saveBankAccount" process="customerBankAccountOP" update="customerBankAccountDT" 
+		            				oncomplete="PF('customerBankAccountDLG').hide();"
+		            				actionListener="#{customerDetailController.saveBankAccount}" styleClass="ui-priority-primary" />
+		        </p:outputPanel>
+		    </p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

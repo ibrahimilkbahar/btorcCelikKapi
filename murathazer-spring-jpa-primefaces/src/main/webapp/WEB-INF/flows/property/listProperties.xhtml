@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">
+        Özellik Sorgulama
+    </ui:define>
+
+
+
+	<ui:define name="implementation">
+		<h:form>
+			<p:commandButton action="createProperty" value="Yeni Özellik Oluştur" />
+			
+			<p:dataTable var="property" 
+				value="#{propertyController.propertyList}"
+				widgetVar="propertyTable"
+				emptyMessage="Aranan kriterlere göre özellik bulunamadı..."
+				rows="20"
+                paginator="true"
+                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                rowsPerPageTemplate="20,40,60,80,100">
+
+				
+
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton action="detailProperty" icon="ui-icon-search" title="View">
+						<f:param name="propertyId" value="#{property.id}" />
+					</p:commandButton>
+				</p:column>
+				
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton update="@form" icon="ui-icon-close" actionListener="#{propertyController.deleteProperty(property)}" >
+						<p:confirm header="Özellik Silinmesi" message="Seçtiğiniz Özellik Silinecektir Eminmisiniz??" icon="ui-icon-alert" />
+				    </p:commandButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+				        <p:commandButton value="Evet" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				        <p:commandButton value="Hayır" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				    </p:confirmDialog>
+				</p:column>
+
+				<p:column filterBy="#{property.name}" headerText="Özellik Adı" filterMatchMode="contains">
+					<h:outputText value="#{property.name}" />
+				</p:column>
+				
+				<p:column filterBy="#{property.code}" headerText="Özellik Kodu" filterMatchMode="contains">
+					<h:outputText value="#{property.code}" />
+				</p:column>
+				
+				<p:column filterBy="#{property.propertyType.id}" headerText="Özellik Tipi" filterMatchMode="exact">
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('propertyTable').filter()">
+							<f:selectItem itemLabel="Özellik Tipi" itemValue="#{null}" noSelectionOption="true" />
+							<f:selectItems value="#{propertyController.propertyTypeList}" var="propertyType" itemLabel="#{propertyType.name}" itemValue="#{propertyType.id}" />
+						</p:selectOneMenu>
+					</f:facet>
+					<h:outputText value="#{property.propertyType.name}" />
+				</p:column>
+				
+				<p:column filterBy="#{property.propertyGroup.id}" headerText="Özellik Grubu" filterMatchMode="exact">
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('propertyTable').filter()">
+							<f:selectItem itemLabel="Özellik Grubu" itemValue="#{null}" noSelectionOption="true" />
+							<f:selectItems value="#{propertyController.propertyGroupList}" var="propertyGroup" itemLabel="#{propertyGroup.name}" itemValue="#{propertyGroup.id}" />
+						</p:selectOneMenu>
+					</f:facet>
+					<h:outputText value="#{property.propertyGroup.name}" />
+				</p:column>
+				
+				<p:column headerText="Ücret Tipi" filterMatchMode="contains">
+					<h:outputText value="#{property.priceType.name}" />
+				</p:column>
+
+				
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

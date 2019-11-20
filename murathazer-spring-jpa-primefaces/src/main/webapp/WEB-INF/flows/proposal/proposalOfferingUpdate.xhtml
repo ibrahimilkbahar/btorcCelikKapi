@@ -1,0 +1,367 @@
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/WEB-INF/template.xhtml"
+>
+
+	<ui:define name="title">
+        Teklif Kalemi Güncelleme
+    </ui:define>
+
+
+
+	<ui:define name="implementation">
+		<h:form id="updateOrderOfferingPropertiesForm">
+			<p:growl autoUpdate="true" id="aaaaa" globalOnly="false"/>
+			<p:fieldset legend="Teklif Kalemi Özellikleri" collapsed="false" toggleable="true" toggleSpeed="500">
+				<h:panelGrid columns="3" cellpadding="5">
+					<p:fieldset legend="Genel Özellikler" collapsed="false" toggleable="true" toggleSpeed="500">
+						<h:panelGrid columns="2" cellpadding="5">
+							<h:outputLabel for="productType" value="Ürün Bilgisi:" style="font-weight:bold" />
+							<h:outputLabel id="productType" value="#{proposalOfferingUpdateController.newOrderOffering.offering.productType.name} -
+																   #{proposalOfferingUpdateController.newOrderOffering.offering.productSurfaceType.name} -
+																   #{proposalOfferingUpdateController.newOrderOffering.offering.productWingType.name} - 
+																   #{proposalOfferingUpdateController.newOrderOffering.productCaseType.name}" style="font-weight:bold" />
+
+							<h:outputLabel for="offeringName" value="Ürün Adı:" style="font-weight:bold" />
+							<h:outputLabel id="offeringName" value="#{proposalOfferingUpdateController.newOrderOffering.offering.name}" style="font-weight:bold" />
+
+				 			<h:outputLabel for="dimension" value="Ürün Boyutu(En/Boy/Duvar):" style="font-weight:bold" />
+							<h:outputLabel id="dimension" value="#{proposalOfferingUpdateController.newOrderOffering.productionWidth} /
+																 #{proposalOfferingUpdateController.newOrderOffering.productionHeight} / 
+																 #{proposalOfferingUpdateController.newOrderOffering.enteredDepth} " style="font-weight:bold" />
+
+							<h:outputLabel for="basePrice" value="Kasa Fiyatı:" style="font-weight:bold" />
+							<h:outputLabel id="basePrice" value="#{proposalOfferingUpdateController.newOrderOffering.dimensionPrice}" style="font-weight:bold" />
+
+							<h:outputLabel for="instanceAmount" value="Birim Fiyat:" style="font-weight:bold" />
+							<h:outputLabel id="instanceAmount" value="#{proposalOfferingUpdateController.newOrderOffering.instanceAmount}" style="font-weight:bold" />
+
+							<h:outputLabel for="instanceDiscount" value="Birim İndirim (%):" style="font-weight:bold" />
+							<p:inputNumber id="instanceDiscount" value="#{proposalOfferingUpdateController.newOrderOffering.instanceDiscount}"/>
+
+							<h:outputLabel for="instanceIncrease" value="Ek Ücret:" style="font-weight:bold" />
+							<p:inputNumber id="instanceIncrease" value="#{proposalOfferingUpdateController.newOrderOffering.instanceIncrease}"/>
+
+							<h:outputLabel for="quantity" value="Adet:" style="font-weight:bold" />
+							<p:inputNumber id="quantity" value="#{proposalOfferingUpdateController.newOrderOffering.quantity}" />
+
+		            		<h:outputLabel for="description" value="Notlar:" style="font-weight:bold" />
+							<p:inputTextarea id="description" value="#{proposalOfferingUpdateController.newOrderOffering.description}" rows="5" cols="30" maxlength="250" autoResize="false" />
+
+						</h:panelGrid>
+					</p:fieldset>
+
+					<p:graphicImage id="doorImage" name="main/images/kapiResim/#{proposalOfferingUpdateController.newOrderOffering.offering.imagePath}" height="280px" width="280px" />
+
+
+				</h:panelGrid>
+				<p:fieldset legend="Metal Özellikler" collapsed="false" toggleable="true" toggleSpeed="500" rendered="#{not empty proposalOfferingUpdateController.orderOfferingPropValListMetal}">
+					<table class="hovertable" style="width: 100%">
+						<col width="200" />
+						<col width="200"/>
+						<col width="200"/>
+						<col width="200"/>
+						<tr>
+							<th>Özellik</th>
+							<th>Değer</th>
+							<th>Raporda Görünme</th>
+							<th>Fiyat Etkisi</th>
+							<th>Fiyat Tipi</th>
+							<th>Hesaplama Metodu</th>
+						</tr>
+
+						<c:forEach items="#{proposalOfferingUpdateController.orderOfferingPropValListMetal}" var="field" varStatus="status">
+							<tr onmouseover="this.style.backgroundColor='#d4e3c5';" onmouseout="this.style.backgroundColor='#d4e3e5';">
+				 				<td>
+									<p:outputLabel value="#{field.propertyValue.property.name}" />
+								</td>
+								<td>
+									
+
+									<p:selectOneMenu value="#{field.propertyValue.propertyLov}" converter="themeConverter" var="t" 
+													rendered="#{field.propertyValue.property.propertyType.code == 'LIST'}"
+													disabled="#{field.isReadonly}"
+													required="#{field.isMondatory}" 
+													requiredMessage="#{field.propertyValue.property.name} zorunludur."
+													style="width:130px">
+										<f:selectItem itemLabel="Seçiniz..." itemValue="" noSelectionOption="true" />
+										<f:selectItems value="#{field.propertyValue.property.propertyLovDef.propertyLovList}" var="item" itemLabel="#{item.name}" itemValue="#{item}" />
+										
+										<p:column style="width:80px">
+											<p:graphicImage  name="main/images/ozellikResim/#{t.imagePath}" height="80px" width="80px"/>	
+										</p:column>
+
+										<p:column>
+											<h:outputText value="#{t.name}" />
+										</p:column>
+									</p:selectOneMenu>
+
+
+			   						<p:inputText value="#{field.propertyValue.valueText}"
+												 rendered="#{field.propertyValue.property.propertyType.code == 'TEXT'}"
+												 required="#{field.isMondatory}" requiredMessage="#{field.propertyValue.property.name} Giriniz.."
+												 readonly="#{field.isReadonly}" />
+
+									<p:inputNumber value="#{field.propertyValue.valueNumber}"
+												   rendered="#{field.propertyValue.property.propertyType.code == 'NUMBER'}"
+												   required="#{field.isMondatory}" requiredMessage="#{field.propertyValue.property.name} Giriniz.."
+												   readonly="#{field.isReadonly}"
+												   decimalSeparator=""
+												   thousandSeparator=""
+												   minValue="-10000000000000"
+												   maxValue="10000000000000"/>
+								</td>
+								<td>
+	 								<p:selectBooleanButton value="#{field.isVisibleOnReport}" onLabel="Raporda Görünsün" offLabel="Raporda Görünmesin"  />
+								</td>
+								<td>
+	 								<p:inputText value="#{field.propertyValue.calculatedPrice}" rendered="#{field.propertyValue.property.priceType.code == 'SPECIAL'}"/>
+	 								<p:outputLabel value="#{field.propertyValue.calculatedPrice}" rendered="#{field.propertyValue.property.priceType.code != 'SPECIAL'}"/>
+								</td>
+								<td>
+	 								<p:outputLabel value="#{field.propertyValue.property.priceType.name}"/>
+								</td>
+								<td>
+	 								<p:outputLabel value="#{field.propertyValue.property.priceCalculateMath}"/>
+								</td>
+							</tr>
+						 </c:forEach>
+					</table>
+				</p:fieldset>
+				<p:fieldset legend="Ahşap Özellikler" collapsed="false" toggleable="true" toggleSpeed="500" rendered="#{not empty proposalOfferingUpdateController.orderOfferingPropValListWooden}">
+					<table class="hovertable" style="width: 100%">
+						<col width="200" />
+						<col width="200"/>
+						<col width="200"/>
+						<col width="200"/>
+						<tr>
+							<th>Özellik</th>
+							<th>Değer</th>
+							<th>Raporda Görünme</th>
+							<th>Fiyat Etkisi</th>
+							<th>Fiyat Tipi</th>
+							<th>Hesaplama Metodu</th>
+						</tr>
+
+						<c:forEach items="#{proposalOfferingUpdateController.orderOfferingPropValListWooden}" var="field" varStatus="status">
+							<tr onmouseover="this.style.backgroundColor='#d4e3c5';" onmouseout="this.style.backgroundColor='#d4e3e5';">
+				 				<td>
+									<p:outputLabel value="#{field.propertyValue.property.name}" />
+								</td>
+								<td>
+									
+
+									<p:selectOneMenu value="#{field.propertyValue.propertyLov}" converter="themeConverter" var="t" 
+													rendered="#{field.propertyValue.property.propertyType.code == 'LIST'}"
+													disabled="#{field.isReadonly}"
+													required="#{field.isMondatory}" 
+													requiredMessage="#{field.propertyValue.property.name} zorunludur."
+													style="width:130px">
+										<f:selectItem itemLabel="Seçiniz..." itemValue="" noSelectionOption="true" />
+										<f:selectItems value="#{field.propertyValue.property.propertyLovDef.propertyLovList}" var="item" itemLabel="#{item.name}" itemValue="#{item}" />
+										<p:column style="width:80px">
+											<p:graphicImage  name="main/images/ozellikResim/#{t.imagePath}" height="80px" width="80px"/>	
+										</p:column>
+
+										<p:column>
+											<h:outputText value="#{t.name}" />
+										</p:column>
+									</p:selectOneMenu>
+
+
+			   						<p:inputText value="#{field.propertyValue.valueText}"
+												 rendered="#{field.propertyValue.property.propertyType.code == 'TEXT'}"
+												 required="#{field.isMondatory}" requiredMessage="#{field.propertyValue.property.name} Giriniz.."
+												 readonly="#{field.isReadonly}" />
+
+									<p:inputNumber value="#{field.propertyValue.valueNumber}"
+												   rendered="#{field.propertyValue.property.propertyType.code == 'NUMBER'}"
+												   required="#{field.isMondatory}" requiredMessage="#{field.propertyValue.property.name} Giriniz.."
+												   readonly="#{field.isReadonly}"
+												   decimalSeparator=""
+												   thousandSeparator=""
+												   minValue="-10000000000000"
+												   maxValue="10000000000000"/>
+								</td>
+								<td>
+	 								<p:selectBooleanButton value="#{field.isVisibleOnReport}" onLabel="Raporda Görünsün" offLabel="Raporda Görünmesin"  />
+								</td>
+								<td>
+	 								<p:inputText value="#{field.propertyValue.calculatedPrice}" rendered="#{field.propertyValue.property.priceType.code == 'SPECIAL'}"/>
+	 								<p:outputLabel value="#{field.propertyValue.calculatedPrice}" rendered="#{field.propertyValue.property.priceType.code != 'SPECIAL'}"/>
+								</td>
+								<td>
+	 								<p:outputLabel value="#{field.propertyValue.property.priceType.name}"/>
+								</td>
+								<td>
+	 								<p:outputLabel value="#{field.propertyValue.property.priceCalculateMath}"/>
+								</td>
+							</tr>
+						 </c:forEach>
+					</table>
+				</p:fieldset>
+				<p:fieldset legend="Aksesuar Özellikler" collapsed="false" toggleable="true" toggleSpeed="500" rendered="#{not empty proposalOfferingUpdateController.orderOfferingPropValListAccessory}">
+					<table class="hovertable" style="width: 100%">
+						<col width="200" />
+						<col width="200"/>
+						<col width="200"/>
+						<col width="200"/>
+						<tr>
+							<th>Özellik</th>
+							<th>Değer</th>
+							<th>Raporda Görünme</th>
+							<th>Fiyat Etkisi</th>
+							<th>Fiyat Tipi</th>
+							<th>Hesaplama Metodu</th>
+						</tr>
+
+						<c:forEach items="#{proposalOfferingUpdateController.orderOfferingPropValListAccessory}" var="field" varStatus="status">
+							<tr onmouseover="this.style.backgroundColor='#d4e3c5';" onmouseout="this.style.backgroundColor='#d4e3e5';">
+				 				<td>
+									<p:outputLabel value="#{field.propertyValue.property.name}" />
+								</td>
+								<td>
+									
+
+									<p:selectOneMenu value="#{field.propertyValue.propertyLov}" converter="themeConverter" var="t" 
+													rendered="#{field.propertyValue.property.propertyType.code == 'LIST'}"
+													disabled="#{field.isReadonly}"
+													required="#{field.isMondatory}" 
+													requiredMessage="#{field.propertyValue.property.name} zorunludur."
+													style="width:130px">
+										<f:selectItem itemLabel="Seçiniz..." itemValue="" noSelectionOption="true" />
+										<f:selectItems value="#{field.propertyValue.property.propertyLovDef.propertyLovList}" var="item" itemLabel="#{item.name}" itemValue="#{item}" />
+										<p:column style="width:80px">
+											<p:graphicImage  name="main/images/ozellikResim/#{t.imagePath}" height="80px" width="80px"/>	
+										</p:column>
+
+										<p:column>
+											<h:outputText value="#{t.name}" />
+										</p:column>
+									</p:selectOneMenu>
+
+
+			   						<p:inputText value="#{field.propertyValue.valueText}"
+												 rendered="#{field.propertyValue.property.propertyType.code == 'TEXT'}"
+												 required="#{field.isMondatory}" requiredMessage="#{field.propertyValue.property.name} Giriniz.."
+												 readonly="#{field.isReadonly}" />
+
+									<p:inputNumber value="#{field.propertyValue.valueNumber}"
+												   rendered="#{field.propertyValue.property.propertyType.code == 'NUMBER'}"
+												   required="#{field.isMondatory}" requiredMessage="#{field.propertyValue.property.name} Giriniz.."
+												   readonly="#{field.isReadonly}"
+												   decimalSeparator=""
+												   thousandSeparator=""
+												   minValue="-10000000000000"
+												   maxValue="10000000000000"/>
+								</td>
+								<td>
+	 								<p:selectBooleanButton value="#{field.isVisibleOnReport}" onLabel="Raporda Görünsün" offLabel="Raporda Görünmesin"  />
+								</td>
+								<td>
+	 								<p:inputText value="#{field.propertyValue.calculatedPrice}" rendered="#{field.propertyValue.property.priceType.code == 'SPECIAL'}"/>
+	 								<p:outputLabel value="#{field.propertyValue.calculatedPrice}" rendered="#{field.propertyValue.property.priceType.code != 'SPECIAL'}"/>
+								</td>
+								<td>
+	 								<p:outputLabel value="#{field.propertyValue.property.priceType.name}"/>
+								</td>
+								<td>
+	 								<p:outputLabel value="#{field.propertyValue.property.priceCalculateMath}"/>
+								</td>
+							</tr>
+						 </c:forEach>
+					</table>
+				</p:fieldset>
+				<p:fieldset legend="Diğer Özellikler" collapsed="false" toggleable="true" toggleSpeed="500" rendered="#{not empty proposalOfferingUpdateController.orderOfferingPropValListOther}">
+					<table class="hovertable" style="width: 100%">
+						<col width="200" />
+						<col width="200"/>
+						<col width="200"/>
+						<col width="200"/>
+						<tr>
+							<th>Özellik</th>
+							<th>Değer</th>
+							<th>Raporda Görünme</th>
+							<th>Fiyat Etkisi</th>
+							<th>Fiyat Tipi</th>
+							<th>Hesaplama Metodu</th>
+						</tr>
+
+						<c:forEach items="#{proposalOfferingUpdateController.orderOfferingPropValListOther}" var="field" varStatus="status">
+							<tr onmouseover="this.style.backgroundColor='#d4e3c5';" onmouseout="this.style.backgroundColor='#d4e3e5';">
+				 				<td>
+									<p:outputLabel value="#{field.propertyValue.property.name}" />
+								</td>
+								<td>
+									
+
+									<p:selectOneMenu value="#{field.propertyValue.propertyLov}" converter="themeConverter" var="t" 
+													rendered="#{field.propertyValue.property.propertyType.code == 'LIST'}"
+													disabled="#{field.isReadonly}"
+													required="#{field.isMondatory}" 
+													requiredMessage="#{field.propertyValue.property.name} zorunludur."
+													style="width:130px">
+										<f:selectItem itemLabel="Seçiniz..." itemValue="" noSelectionOption="true" />
+										<f:selectItems value="#{field.propertyValue.property.propertyLovDef.propertyLovList}" var="item" itemLabel="#{item.name}" itemValue="#{item}" />
+										<p:column style="width:80px">
+											<p:graphicImage  name="main/images/ozellikResim/#{t.imagePath}" height="80px" width="80px"/>	
+										</p:column>
+
+										<p:column>
+											<h:outputText value="#{t.name}" />
+										</p:column>
+									</p:selectOneMenu>
+
+
+			   						<p:inputText value="#{field.propertyValue.valueText}"
+												 rendered="#{field.propertyValue.property.propertyType.code == 'TEXT'}"
+												 required="#{field.isMondatory}" requiredMessage="#{field.propertyValue.property.name} Giriniz.."
+												 readonly="#{field.isReadonly}" />
+
+									<p:inputNumber value="#{field.propertyValue.valueNumber}"
+												   rendered="#{field.propertyValue.property.propertyType.code == 'NUMBER'}"
+												   required="#{field.isMondatory}" requiredMessage="#{field.propertyValue.property.name} Giriniz.."
+												   readonly="#{field.isReadonly}"
+												   decimalSeparator=""
+												   thousandSeparator=""
+												   minValue="-10000000000000"
+												   maxValue="10000000000000"/>
+								</td>
+								<td>
+	 								<p:selectBooleanButton value="#{field.isVisibleOnReport}" onLabel="Raporda Görünsün" offLabel="Raporda Görünmesin"  />
+								</td>
+								<td>
+	 								<p:inputText value="#{field.propertyValue.calculatedPrice}" rendered="#{field.propertyValue.property.priceType.code == 'SPECIAL'}"/>
+	 								<p:outputLabel value="#{field.propertyValue.calculatedPrice}" rendered="#{field.propertyValue.property.priceType.code != 'SPECIAL'}"/>
+								</td>
+								<td>
+	 								<p:outputLabel value="#{field.propertyValue.property.priceType.name}"/>
+								</td>
+								<td>
+	 								<p:outputLabel value="#{field.propertyValue.property.priceCalculateMath}"/>
+								</td>
+							</tr>
+						 </c:forEach>
+					</table>
+				</p:fieldset>
+			</p:fieldset>
+
+	            <p:commandButton value="Geri" process="@this"  action="back">
+	            	<f:param name="proposalId" value="#{proposalOfferingUpdateController.proposalId}" />
+	            </p:commandButton>
+
+				<p:commandButton value="Kaydet" rendered="#{proposalUpdateController.proposal.order.orderStatus.code == 'DRAFT'}"
+	          					 id="saveOrderOfferingProperties"
+	          					 process="updateOrderOfferingPropertiesForm"
+	          					 update="updateOrderOfferingPropertiesForm,growl"
+		            			 actionListener="#{proposalOfferingUpdateController.saveProposalOffering}" />
+		</h:form>
+
+	</ui:define>
+</ui:composition>

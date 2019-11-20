@@ -1,0 +1,130 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">
+        Kapı Boyut Sorgulama
+    </ui:define>
+
+
+
+	<ui:define name="implementation">
+		<h:form id="fullCaseDepthPriceRangeForm">
+			<h:panelGrid columns="2" cellpadding="5" id="fullCaseDepthPriceRangePanel" rendered="#{dimensionController.productCaseTypeId == 2}">
+				<p:dataTable id="fullCaseDepthPriceRangeDT" var="fullCaseDepthPriceRange" 
+					value="#{dimensionController.fullCaseDepthPriceRangeList}" 
+					emptyMessage="Tam Kasa Boyut Fiyat Dağılımı bulunamadı."
+					rowKey="#{fullCaseDepthPriceRange.id}"
+					rows="20"
+					editable="true" editMode="cell">
+					
+					<f:facet name="header">
+						Tam Kasa Duvar Boyut Fiyat Dağılımı
+					</f:facet>
+					
+					<p:ajax event="cellEdit" listener="#{dimensionController.onCellEditCasePrice}" update="fullCaseDepthPriceRangeDT" />
+ 
+					<p:column  headerText="Duvar Min">
+						<h:outputText value="#{fullCaseDepthPriceRange.depthMin}" />
+					</p:column>
+					<p:column  headerText="Duvar Max">
+						<h:outputText value="#{fullCaseDepthPriceRange.depthMax}" />
+					</p:column>
+					
+					<p:column headerText="Üretim Fiyat">
+			           <p:cellEditor>
+			               <f:facet name="output"><h:outputText value="#{fullCaseDepthPriceRange.price} TL" /></f:facet>
+			               <f:facet name="input"><p:inputText value="#{fullCaseDepthPriceRange.price}" label="Üretim Fiyat"/></f:facet>
+			           </p:cellEditor>
+			        </p:column>
+		       
+				</p:dataTable>
+	 
+				
+				
+			</h:panelGrid>	
+		</h:form>
+		
+		<h:form id="dimensionForm">
+			<h:panelGrid columns="2" cellpadding="5">
+				<h:panelGrid columns="2" cellpadding="5">
+					<p:outputLabel for="productTypeId" value="Ürün Tipi:" style="font-weight:bold" />
+					<p:selectOneMenu id="productTypeId" value="#{dimensionController.productTypeId}" style="width:150px;"  >
+						<p:ajax event="change" update="dimensionDT,fullCaseDepthPriceRangeForm" listener="#{dimensionController.onProductChange}" />
+						<f:selectItems value="#{dimensionController.productTypeList}" var="productType" itemLabel="#{productType.name}" itemValue="#{productType.id}" />			
+					</p:selectOneMenu>
+		
+					<p:outputLabel for="productWingTypeId" value="Kanat Tipi:" style="font-weight:bold" />
+					<p:selectOneMenu id="productWingTypeId" value="#{dimensionController.productWingTypeId}" style="width:180px;"  >
+						<p:ajax event="change" update="dimensionDT,fullCaseDepthPriceRangeForm" listener="#{dimensionController.onProductChange}" />
+						<f:selectItems value="#{dimensionController.productWingTypeList}" var="productWingType" itemLabel="#{productWingType.name}" itemValue="#{productWingType.id}" />			
+					</p:selectOneMenu>
+					
+					<p:outputLabel for="productCaseTypeId" value="Kasa Tipi:" style="font-weight:bold" />
+					<p:selectOneMenu id="productCaseTypeId" value="#{dimensionController.productCaseTypeId}" style="width:180px;"  >
+						<p:ajax event="change" update="dimensionDT,fullCaseDepthPriceRangeForm" listener="#{dimensionController.onProductChange}" />
+						<f:ajax render="fullCaseDepthPriceRangeForm" />
+						<f:selectItems value="#{dimensionController.productCaseTypeList}" var="productCaseType" itemLabel="#{productCaseType.name}" itemValue="#{productCaseType.id}" />			
+					</p:selectOneMenu>
+	
+			
+
+				</h:panelGrid>
+				
+
+				
+			</h:panelGrid>
+			<p:dataTable id="dimensionDT" var="dimension" 
+				value="#{dimensionController.dimensionList}" 
+				emptyMessage="Kapı Boyutu bulunamadı."
+				rowKey="#{dimension.id}"
+				rows="160"
+				rowStyleClass="#{((dimension.productWingType.id eq 1) and ((dimension.productionWidth mod 10) eq 0)) or ((dimension.productWingType.id eq 2) and ((dimension.productionWidth mod 20) eq 0)) ? 'odd' : 'even'}"
+				editable="true" editMode="cell">
+				<f:facet name="header">
+					Kapı Boyutları
+				</f:facet>
+				<p:ajax event="cellEdit" listener="#{dimensionController.onCellEdit}" update="dimensionDT" />
+ 
+
+				
+				<p:column  headerText="En Min">
+					<h:outputText value="#{dimension.widthMin}" />
+				</p:column>
+				<p:column  headerText="En Max">
+					<h:outputText value="#{dimension.widthMax }" />
+				</p:column>
+				<p:column  headerText="Boy Min">
+					<h:outputText value="#{dimension.heightMin }" />
+				</p:column> 
+				<p:column  headerText="Boy Max">
+					<h:outputText value="#{dimension.heightMax }" />
+				</p:column>
+				<p:column  headerText="Üretim En">
+					<h:outputText value="#{dimension.productionWidth}" />
+				</p:column>
+				<p:column  headerText="Üretim Boy">
+					<h:outputText value="#{dimension.productionHeight}" />
+				</p:column>
+
+				<p:column headerText="Üretim Fiyat">
+		           <p:cellEditor>
+		               <f:facet name="output"><h:outputText value="#{dimension.price} TL" /></f:facet>
+		               <f:facet name="input"><p:inputText value="#{dimension.price}" label="Üretim Fiyat"/></f:facet>
+		           </p:cellEditor>
+		       </p:column>
+		 
+				
+				
+			</p:dataTable>
+
+		
+		</h:form>
+		
+		
+	</ui:define>
+</ui:composition>

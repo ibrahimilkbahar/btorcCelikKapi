@@ -1,0 +1,119 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">
+        Özellik Seçim Listesi Tanımlama
+    </ui:define>
+
+
+
+	<ui:define name="implementation">
+		<h:form id="createPropertyLovDefForm">
+			<p:fieldset legend="Özellik Seçim Listesi Bilgileri">
+				<h:panelGrid columns="2" cellpadding="5">
+					<h:outputLabel for="lovDefName" value="Özellik Seçim Listesi Adı:" style="font-weight:bold" />
+					<p:inputText id="lovDefName" value="#{propertyLovDefController.propertyLovDef.name}" />
+
+					<h:outputLabel for="lovDefCode" value="Özellik Seçim Listesi Kodu:" style="font-weight:bold" />
+					<p:inputText id="lovDefCode" value="#{propertyLovDefController.propertyLovDef.code}" />
+				</h:panelGrid>
+				<p:commandButton value="Kaydet" update="createPropertyLovDefForm" process="createPropertyLovDefForm" icon="ui-icon-check" action="#{propertyLovDefController.savePropertyLovDef()}"/>
+			</p:fieldset>	
+		</h:form>
+		
+		<h:form id="propertyLovItemForm" rendered="#{propertyLovDefController.propertyLovDef.id >0}">
+			<p:dataTable id="propertyLovItemDT" var="propertyLovItem" 
+				value="#{propertyLovDefController.propertyLovItemList}" 
+				reflow="true"
+				rows="100" 
+				emptyMessage="Özellik Seçim Elemanı bulunamadı.">
+				<f:facet name="header">
+					Özellik Seçim Eleman Listesi
+				</f:facet>
+				
+				<p:column headerText="Resim">
+					<p:graphicImage  name="main/images/ozellikResim/#{propertyLovItem.imagePath}" height="80px" width="80px"/>
+				</p:column>
+				<p:column headerText="Ad">
+					<h:outputText value="#{propertyLovItem.name}" />
+				</p:column>
+				<p:column headerText="Kod">
+					<h:outputText value="#{propertyLovItem.code}" />
+				</p:column>
+
+				<p:column headerText="Birim Fiyat">
+					<h:outputText value="#{propertyLovItem.price} TL" >
+						<f:convertNumber  locale="tr"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Sıra">
+					<h:outputText value="#{propertyLovItem.orderBy}" />
+				</p:column>
+				<p:column headerText="Ek Bilgi">
+					<h:outputText value="#{propertyLovItem.relatedInfo}" />
+				</p:column>
+				<p:column headerText="Ek Değer">
+					<h:outputText value="#{propertyLovItem.relatedValue}" />
+				</p:column>
+				<p:column style="width:32px;text-align: center">
+		             <p:commandButton update=":propertyLovItemForm:propertyLovItemOP" 
+		             				action="#{propertyLovDefController.loadPropertyLovItem(propertyLovItem)}" 
+		             				oncomplete="PF('propertyLovItemDLG').show()" icon="ui-icon-search" title="View">
+		                <f:setPropertyActionListener value="#{propertyLovItem}" target="#{propertyLovDefController.newPropertyLovItem}" />
+		            </p:commandButton>
+		        </p:column>
+		         <p:column style="width:32px;text-align: center">
+					<p:commandButton update="propertyLovItemDT,growl" process="propertyLovItemDT" icon="ui-icon-close" actionListener="#{propertyLovDefController.deletePropertyLovItem(propertyLovItem)}">
+						<p:confirm header="Özellik Seçim Elemanı Silinmesi" message="Özellik Seçim Elemanı Silinecektir Eminmisiniz??" icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="Evet" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="Hayır" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</p:column>
+			</p:dataTable>
+			<p:commandButton update=":propertyLovItemForm:propertyLovItemOP"  ajax="true"
+							action="#{propertyLovDefController.resetPropertyLovItem()}" 
+							oncomplete="PF('propertyLovItemDLG').show()" value="Yeni Özellik Seçim Elemanı"/>
+			
+			
+			<p:dialog header="Özellik Seçim Eleman Bilgisi" widgetVar="propertyLovItemDLG" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+		        <p:outputPanel id="propertyLovItemOP" style="text-align:left;">
+		            <h:panelGrid  columns="2" >
+		                <h:outputLabel for="name" value="Adı:" style="font-weight:bold" />
+						<p:inputText id="name" value="#{propertyLovDefController.newPropertyLovItem.name}" />
+		
+						<h:outputLabel for="code" value="Kod:" style="font-weight:bold" />
+						<p:inputText id="code" value="#{propertyLovDefController.newPropertyLovItem.code}" />
+						
+						<h:outputLabel for="imagePath" value="Resim:" style="font-weight:bold" />
+						<p:inputText id="imagePath" value="#{propertyLovDefController.newPropertyLovItem.imagePath}" />
+		
+						<h:outputLabel for="price" value="Birim Fiyat:" style="font-weight:bold" />
+						<p:inputNumber id="price" value="#{propertyLovDefController.newPropertyLovItem.price}" symbol=" TL" symbolPosition="s" decimalSeparator="," thousandSeparator="." />
+						
+						<h:outputLabel for="orderBy" value="Sıra:" style="font-weight:bold" />
+						<p:inputText id="orderBy" value="#{propertyLovDefController.newPropertyLovItem.orderBy}" />
+						
+						<h:outputLabel for="relatedInfo" value="Ek Bilgi:" style="font-weight:bold" />
+						<p:inputText id="relatedInfo" value="#{propertyLovDefController.newPropertyLovItem.relatedInfo}" />
+						
+						<h:outputLabel for="relatedValue" value="Ek Değer:" style="font-weight:bold" />
+						<p:inputText id="relatedValue" value="#{propertyLovDefController.newPropertyLovItem.relatedValue}" />
+						
+		            </h:panelGrid>
+		            <p:commandButton value="Özellik Seçim Elemanı Kaydet" id="savePropertyLovItem" process="propertyLovItemOP" update="propertyLovItemDT" 
+		            				oncomplete="PF('propertyLovItemDLG').hide();"
+		            				actionListener="#{propertyLovDefController.savePropertyLovItem}" styleClass="ui-priority-primary" />
+		        </p:outputPanel>
+		    </p:dialog>
+		</h:form>
+		
+	</ui:define>
+</ui:composition>

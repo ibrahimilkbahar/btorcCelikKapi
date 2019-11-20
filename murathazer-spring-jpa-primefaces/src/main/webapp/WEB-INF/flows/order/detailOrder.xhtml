@@ -1,0 +1,277 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">
+        Sipariş Detayları
+    </ui:define>
+
+
+
+	<ui:define name="implementation">
+		<h:form id="createOrderForm">
+			<p:tabView>
+		        <p:tab title="Sipariş Bilgileri">
+		        	<h:form id="proposalInformationForm">
+			            <p:fieldset  collapsed="false" toggleable="false">
+							<h:panelGrid columns="3" cellpadding="5">
+								<h:panelGrid columns="2" cellpadding="5">
+									
+									<p:outputLabel for="proposalNo" value="Teklif No:" style="font-weight:bold" />
+									<p:outputLabel   id="proposalNo"  value="#{orderController.order.orderNo}" />
+									
+									<p:outputLabel for="commitmentDate" value="Teslimat Tarihi:" style="font-weight:bold" />
+									<p:outputLabel   id="commitmentDate"  value="#{orderController.order.commitmentDate}">
+										<f:convertDateTime pattern="dd-MM-yyyy" />
+									</p:outputLabel>
+									
+								</h:panelGrid>
+								<h:panelGrid columns="2" cellpadding="5">	
+									
+									<p:outputLabel for="customerId" value="Müşteri:" style="font-weight:bold"/>
+									<p:outputLabel id="customerId" value="#{orderController.order.customer.fullname}"/>
+									
+									<p:outputLabel for="customerAddressId" value="Teslimat Adresi:" style="font-weight:bold"/>
+									<p:outputLabel id="customerAddressId" value="#{orderController.order.deliveryAddress.addressName}"/>
+									
+									<p:outputLabel for="orderStatus" value="Sipariş Statüsü:" style="font-weight:bold" />
+									<p:outputLabel   id="orderStatus"  value="#{orderController.order.orderStatus.name}" />
+								
+								</h:panelGrid>
+								<h:panelGrid columns="2" cellpadding="5">
+									<p:outputLabel for="customerProjectId" value="Proje:" style="font-weight:bold"/>
+									<p:outputLabel id="customerProjectId" value="#{orderController.order.customerProject.projectName}"/>
+									
+									<p:outputLabel for="customerContactId" value="Kontak:" style="font-weight:bold"/>
+									<p:outputLabel id="customerContactId" value="#{orderController.order.customerContact.fullname}"/>
+									
+								</h:panelGrid>
+							</h:panelGrid>				 
+				           
+				   
+						</p:fieldset>
+					</h:form>
+
+		        </p:tab>
+		        <p:tab title="Nakliye-Montaj Bilgisi">
+		        	<h:form id="transportAndInstallationForm">
+			        	<p:fieldset collapsed="false" toggleable="false">
+							<h:panelGrid columns="2" cellpadding="5">
+								<h:panelGrid columns="2" cellpadding="5">
+								
+									
+									<p:outputLabel for="transportAmount" value="Nakliye Maliyeti:" style="font-weight:bold" />
+									<p:outputLabel id="transportAmount" value="#{orderController.order.transportAmount} TL"/>
+									
+									<p:outputLabel for="transportDescription" value="Nakliye Notlar:" style="font-weight:bold" />
+									<p:outputLabel id="transportDescription" value="#{orderController.order.transportDescription}"/>
+										
+								</h:panelGrid>
+								<h:panelGrid columns="2" cellpadding="5">	
+			
+									
+									<p:outputLabel for="installationAmount" value="Montaj Maliyeti:" style="font-weight:bold" />
+									<p:outputLabel id="installationAmount" value="#{orderController.order.installationAmount} TL"/>
+										
+									<p:outputLabel for="installationDescription" value="Montaj Notlar:" style="font-weight:bold" />
+									<p:outputLabel id="installationDescription" value="#{orderController.order.installationDescription}"/>
+									
+								</h:panelGrid>
+							</h:panelGrid>
+						</p:fieldset>					 
+					</h:form>
+		        </p:tab>
+		        <p:tab title="Ödeme Bilgileri ">
+		        	<h:form id="paymentInfoForm">
+						<p:fieldset collapsed="false" toggleable="false">
+							<h:panelGrid columns="2" cellpadding="5">
+								<p:outputLabel for="paymentInformation" value="Ödeme Bilgileri:" style="font-weight:bold" />
+								<p:outputLabel id="paymentInformation"  value="#{orderController.order.paymentInformation}" />
+							</h:panelGrid>
+						</p:fieldset>					 
+					</h:form>
+				</p:tab>
+		      
+		    </p:tabView>
+		</h:form>
+		
+		<h:form id="orderOfferingListForm"  style="font-size: 10px;">
+			<p:dataTable id="orderOfferingDT" var="orderOffering" 
+				value="#{orderController.orderOfferingList}" 
+				reflow="true"
+				rows="100"  expandedRow="#{true}"
+				rowKey="#{orderOffering.id}" 
+				emptyMessage="Sipariş eklenmiş Kapı Bulunamadı.">
+				<f:facet name="header"  >
+					Sipariş Kalemleri - ###Toplam Tamamlanma Yüzdesi :#{orderController.getCompletePercentOfOrder()}###
+				</f:facet>
+				
+				<p:column style="width:16px">
+					<p:rowToggler  />
+				</p:column>
+				
+				<p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+				
+				<p:column headerText="Ürün Resmi" width="150">
+					<p:graphicImage  name="main/images/kapiResim/#{orderOffering.offering.imagePath}" height="150px" width="150px" />
+				</p:column>
+				<p:column headerText="Ürün Tipi" >
+					<h:outputText value="#{orderOffering.offering.productType.name}" />
+				</p:column>
+				<p:column headerText="Yüzey Tipi" >
+					<h:outputText value="#{orderOffering.offering.productSurfaceType.name}" />
+				</p:column>
+				<p:column headerText="Kanat Tipi" >
+					<h:outputText value="#{orderOffering.offering.productWingType.name}" />
+				</p:column>
+				<p:column headerText="Ürün Adı">
+					<h:outputText value="#{orderOffering.offering.name}" />
+				</p:column>
+				
+				<p:column headerText="En/Boy/Duvar" >
+					<h:outputText value="#{orderOffering.productionWidth} / #{orderOffering.productionHeight} / #{orderOffering.enteredDepth}" />
+				</p:column>
+				<p:column headerText="Adet">
+					<h:outputText value="#{orderOffering.quantity}" />
+				</p:column>
+				<p:column headerText="Tamamlanma Yüzde">
+					<h:outputText value="#{orderController.getCompletePercentOfOrderOffering(orderOffering)}" />
+				</p:column>
+				<p:column style="text-align: center">
+					<p:commandButton
+						update="@this" ajax="false" immediate="true"
+						process="@this" value="Ürün Kartı" icon="ui-icon-print" >
+						<p:fileDownload value="#{orderController.productionReportOrderOffering(orderOffering)}" />
+					</p:commandButton>
+				</p:column>
+
+				<p:rowExpansion>
+					<p:dataTable id="productInstanceDT" var="productInstance"
+						value="#{orderOffering.productInstanceList}" reflow="true"
+						rows="10" emptyMessage="Sipariş eklenmiş Kapı Bulunamadı."
+						paginator="true"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15"
+						editable="true" editMode="cell"
+						>
+ 
+						
+ 
+						
+						<p:column headerText="Ürün No">
+							<h:outputText value="#{productInstance.productNo}" />
+						</p:column>
+						
+						
+						<p:column headerText="Kapı Yönü">
+							<p:cellEditor>
+								<f:facet name="output"><h:outputText value="#{productInstance.doorOpenSide.name}" /></f:facet>
+								 
+								<f:facet name="input"> 
+									<h:selectOneMenu value="#{productInstance.doorOpenSide.id}" style="width:100%">
+									
+										<p:ajax  listener="#{orderController.onCellEdit(productInstance,productInstance.doorOpenSide.id)}" update="productInstanceDT,growl" />
+										<f:selectItems value="#{orderController.doorOpenSideList}" var="doorOpenSide" itemLabel="#{doorOpenSide.name}" itemValue="#{doorOpenSide.id}" />
+									</h:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+				        
+				        
+						 
+						<p:column headerText="Ürün Statü">
+							<h:outputText value="#{productInstance.productInstanceStatus.name}" />
+						</p:column>
+						<p:column headerText="Kesim" style="text-align: center" >
+							<p:commandButton
+								update="orderOfferingListForm,growl" disabled="#{productInstance.productInstanceStatus.id >= 2}"
+								process="@this" value="Kesim"
+								actionListener="#{orderController.updateProductInstanceStatus(productInstance,2)}" />
+						</p:column>
+						<p:column headerText="CNC" style="text-align: center">
+							<p:commandButton
+								update="orderOfferingListForm,growl" disabled="#{productInstance.productInstanceStatus.id >= 3}"
+								process="@this" value="CNC"
+								actionListener="#{orderController.updateProductInstanceStatus(productInstance,3)}" />
+						</p:column>
+						<p:column headerText="Büküm" style="text-align: center">
+							<p:commandButton
+								update="orderOfferingListForm,growl" disabled="#{productInstance.productInstanceStatus.id >= 4}"
+								process="@this" value="Büküm"
+								actionListener="#{orderController.updateProductInstanceStatus(productInstance,4)}" />
+						</p:column>
+						<p:column headerText="Kaynak" style="text-align: center">
+							<p:commandButton
+								update="orderOfferingListForm,growl" disabled="#{productInstance.productInstanceStatus.id >= 5}"
+								process="@this" value="Kaynak"
+								actionListener="#{orderController.updateProductInstanceStatus(productInstance,5)}" />
+						</p:column>
+						<p:column headerText="Boya" style="text-align: center">
+							<p:commandButton
+								update="orderOfferingListForm,growl" disabled="#{productInstance.productInstanceStatus.id >= 6}"
+								process="@this" value="Boya"
+								actionListener="#{orderController.updateProductInstanceStatus(productInstance,6)}" />
+						</p:column>
+						<p:column headerText="Montaj" style="text-align: center">
+							<p:commandButton
+								update="orderOfferingListForm,growl" disabled="#{productInstance.productInstanceStatus.id >= 7}"
+								process="@this" value="Montaj"
+								actionListener="#{orderController.updateProductInstanceStatus(productInstance,7)}" />
+						</p:column>
+						
+						<p:column headerText="Nakliye" style="text-align: center">
+							<p:commandButton rendered="#{productInstance.orderOffering.order.transportRequested eq true}"
+								update="orderOfferingListForm,growl" disabled="#{productInstance.productInstanceStatus.id >= 8}" 
+								process="@this" value="Nakliye"
+								actionListener="#{orderController.updateProductInstanceStatus(productInstance,8)}" />
+						</p:column>
+						
+						<p:column headerText="Saha Montaj" style="text-align: center" >
+							<p:commandButton rendered="#{productInstance.orderOffering.order.installationRequested eq true}"
+								update="orderOfferingListForm,growl" disabled="#{productInstance.productInstanceStatus.id >= 9}"
+								process="@this" value="Saha Montaj"
+								actionListener="#{orderController.updateProductInstanceStatus(productInstance,9)}" />
+						</p:column>
+						
+						<p:column headerText="Tamamlandı" style="text-align: center">
+							<p:commandButton
+								update="orderOfferingListForm,growl,createOrderForm" disabled="#{productInstance.productInstanceStatus.id >= 10}"
+								process="@this" value="Tamamlandı"
+								actionListener="#{orderController.updateProductInstanceStatus(productInstance,10)}" />
+						</p:column>
+						
+						<p:column headerText="İptal" style="text-align: center">
+							<p:commandButton
+								update="orderOfferingListForm,growl,createOrderForm" disabled="#{productInstance.productInstanceStatus.id >= 10}"
+								process="@this" value="İptal Edildi."
+								actionListener="#{orderController.updateProductInstanceStatus(productInstance,11)}" />
+						</p:column>
+						
+						<p:column headerText="Tamamlanma Yüzde" style="text-align: center">
+							<h:outputText value="#{orderController.getCompletePercentOfProduct(productInstance)}" />
+						</p:column>
+						<p:column headerText="Ürün Kartı" style="text-align: center">
+							<p:commandButton
+								update="@this" ajax="false" immediate="true"
+								process="@this" value="Ürün Kartı" icon="ui-icon-print" >
+								<p:fileDownload value="#{orderController.productionReportProductInstance(productInstance)}" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</p:rowExpansion>
+
+
+			</p:dataTable>
+		</h:form>
+		
+		
+		
+		
+		
+	</ui:define>
+</ui:composition>

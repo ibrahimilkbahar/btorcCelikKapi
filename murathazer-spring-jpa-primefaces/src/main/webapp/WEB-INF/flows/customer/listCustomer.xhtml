@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">
+        Müşteri Sorgulama
+    </ui:define>
+
+
+
+	<ui:define name="implementation">
+		<h:form>
+			<p:commandButton action="createCustomer" value="Yeni Kurumsal Müşteri">
+				<f:param name="isCorporate" value="1" />
+			</p:commandButton>
+			<p:commandButton action="createCustomer" value="Yeni Bireysel Müşteri">
+				<f:param name="isCorporate" value="0" />
+			</p:commandButton>
+			<p:dataTable 
+				var="customer" 
+				value="#{customerListController.customerList}"
+				widgetVar="customerTable"
+				emptyMessage="Aranan kriterlere göre müşteri bulunamadı..."
+				rows="20"
+                paginator="true"
+                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                rowsPerPageTemplate="20,40,60,80,100">
+
+
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton action="detailCustomer" icon="ui-icon-search" title="View">
+						<f:param name="customerId" value="#{customer.id}" />
+					</p:commandButton>
+				</p:column>
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton update="@form" icon="ui-icon-close" actionListener="#{customerListController.deleteCustomer(customer)}" >
+						<p:confirm header="Müşteri Silinmesi" message="Müşteriye Ait Tüm Kayıtlar Silinecektir Eminmisiniz??" icon="ui-icon-alert" />
+				    </p:commandButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+				        <p:commandButton value="Evet" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				        <p:commandButton value="Hayır" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				    </p:confirmDialog>
+				</p:column>
+				
+				<p:column filterBy="#{customer.fullname}" headerText="Müşteri Ünvanı" filterMatchMode="contains">
+					<h:outputText value="#{customer.fullname}" />
+				</p:column>
+				<p:column filterBy="#{customer.taxId}" headerText="Vergi No" filterMatchMode="contains">
+					<h:outputText value="#{customer.taxId}" />
+				</p:column>
+				<p:column filterBy="#{customer.citizenId}" headerText="TC Kimlik No" filterMatchMode="contains">
+					<h:outputText value="#{customer.citizenId}" />
+				</p:column>
+
+				<p:column filterBy="#{customer.email}" headerText="E-Mail" filterMatchMode="contains">
+					<h:outputText value="#{customer.email}" />
+				</p:column>
+				<p:column filterBy="#{customer.phone}" headerText="Telefon" filterMatchMode="contains">
+					<h:outputText value="#{customer.phone}" />
+				</p:column>
+								
+				<p:column filterBy="#{customer.isCorporate}" headerText="Kurum/Birey/Hepsi" filterMatchMode="equals">
+					<f:facet name="filter">
+						<p:selectOneButton onchange="PF('customerTable').filter()">
+							<f:converter converterId="javax.faces.Boolean" />
+							<f:selectItem itemLabel="Hepsi" itemValue="" />
+							<f:selectItem itemLabel="Kurum" itemValue="true" />
+							<f:selectItem itemLabel="Birey" itemValue="false" />
+						</p:selectOneButton>
+					</f:facet>
+					<h:outputText value="#{customer.isCorporate ? 'Kurum': 'Birey'}" />
+				</p:column>
+				
+				
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

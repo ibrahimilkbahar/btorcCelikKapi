@@ -1,0 +1,429 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">
+        Teklif Güncelleme
+    </ui:define>
+
+
+
+	<ui:define name="implementation">
+		<h:form id="createOrderForm">
+			<p:tabView>
+    			<p:ajax event="tabChange" update="exportEmailForm" />
+		        <p:tab title="Teklif Bilgileri">
+		        	<h:form id="proposalInformationForm">
+			            <p:fieldset  collapsed="false" toggleable="false">
+							<h:panelGrid columns="3" cellpadding="5">
+								<h:panelGrid columns="2" cellpadding="5">
+									
+									<h:outputLabel for="proposalNo" value="Teklif Numarası:" style="font-weight:bold" />
+									<p:inputText   id="proposalNo"  value="#{proposalUpdateController.proposal.proposalNo}" readonly="true">
+										<f:convertDateTime pattern="dd-MM-yyyy" />
+									</p:inputText>
+									
+									<h:outputLabel for="createDate" value="Oluşturma Tarihi:" style="font-weight:bold" />
+									<p:inputText   id="createDate"  value="#{proposalUpdateController.proposal.createDate}" readonly="true">
+										<f:convertDateTime pattern="dd-MM-yyyy" />
+									</p:inputText>
+									
+									<h:outputLabel for="commitmentDate" value="Taahhüt Tarihi:" style="font-weight:bold" />
+									<p:calendar id="commitmentDate" value="#{proposalUpdateController.proposal.order.commitmentDate}" pattern="dd-MM-yyyy" mask="true" locale="tr">
+										<f:convertDateTime pattern="dd-MM-yyyy" />
+									</p:calendar>
+									
+									<h:outputLabel for="finalDiscount" value="Genel İndirim (%):" style="font-weight:bold" />
+									<p:inputNumber id="finalDiscount" value="#{proposalUpdateController.proposal.order.finalDiscount}"/>
+									
+								</h:panelGrid>
+								<h:panelGrid columns="2" cellpadding="5">	
+									
+									<p:outputLabel for="customerId" value="Müşteri:" style="font-weight:bold"/>
+									<p:selectOneMenu id="customerId" value="#{proposalUpdateController.customerId}" style="width:150px" required="true">
+										<p:ajax event="change" update="customerAddressId,customerProjectId,customerContactId" listener="#{proposalUpdateController.onCustomerChange}" />
+										<f:selectItems value="#{proposalUpdateController.customerList}" var="customer" itemLabel="#{customer.fullname}" itemValue="#{customer.id}" />
+									</p:selectOneMenu>
+									
+									<p:outputLabel for="customerAddressId" value="Teslimat Adresi:" style="font-weight:bold"/>
+									<p:selectOneMenu id="customerAddressId" value="#{proposalUpdateController.deliveryAddressId}" style="width:150px" required="true">
+										<f:selectItems value="#{proposalUpdateController.customerAddressList}" var="address" itemLabel="#{address.addressName}" itemValue="#{address.id}" />
+									</p:selectOneMenu>
+									
+									<h:outputLabel for="orderStatus" value="Teklif Statüsü:" style="font-weight:bold" />
+									<p:inputText   id="orderStatus"  value="#{proposalUpdateController.proposal.order.orderStatus.name}" readonly="true" />
+								
+								</h:panelGrid>
+								<h:panelGrid columns="2" cellpadding="5">
+								
+									<p:outputLabel for="customerProjectId" value="Proje:" style="font-weight:bold"/>
+									<p:selectOneMenu id="customerProjectId" value="#{proposalUpdateController.customerProjectId}" style="width:150px">
+										<f:selectItems value="#{proposalUpdateController.customerProjectList}" var="project" itemLabel="#{project.projectName}" itemValue="#{project.id}" />
+									</p:selectOneMenu>
+									
+									<p:outputLabel for="customerContactId" value="Kontak:" style="font-weight:bold"/>
+									<p:selectOneMenu id="customerContactId" value="#{proposalUpdateController.customerContactId}" style="width:150px">
+										<f:selectItems value="#{proposalUpdateController.customerContactList}" var="contact" itemLabel="#{contact.fullname}" itemValue="#{contact.id}" />
+									</p:selectOneMenu>
+									
+									<h:outputLabel for="rejectReason" value="Red Nedeni:" style="font-weight:bold" />
+									<p:inputTextarea id="rejectReason" value="#{proposalUpdateController.proposal.order.rejectReason}" rows="2" cols="50" maxlength="400" autoResize="false" readonly="true" />
+									
+								</h:panelGrid>
+							</h:panelGrid>
+							<p:commandButton value="Bilgileri Güncelle" 
+											 rendered="#{proposalUpdateController.proposal.order.orderStatus.code == 'DRAFT'}"
+					        				 process="proposalInformationForm" 
+											 update="proposalHistoryForm:proposalHistoryDT,proposalOfferingListForm:orderOfferingDT,growl" 
+				           					 actionListener="#{proposalUpdateController.saveProposalInformation}"/>
+				           					 
+				           	<p:commandButton value="Teklifi Onaya Gönder" 
+				           					 rendered="#{proposalUpdateController.proposal.order.orderStatus.code == 'DRAFT'}"
+					        				 process="proposalInformationForm" 
+											 update="createOrderForm,proposalOfferingListForm,growl" 
+				           					 actionListener="#{proposalUpdateController.saveProposalStatusToSent}"/>
+				           					 
+				   
+						</p:fieldset>
+					</h:form>
+
+		        </p:tab>
+		        <p:tab title="Kapı Ekleme" rendered="#{proposalUpdateController.proposal.order.orderStatus.code == 'DRAFT'}">
+		        	<h:form id="addOfferingForm">
+						<p:fieldset id="addOrderOffering"  collapsed="false" toggleable="false">
+							<h:panelGrid columns="4" cellpadding="5" >
+								<h:panelGrid columns="2" cellpadding="5">
+									<p:outputLabel for="productTypeId" value="Ürün Tipi:" style="font-weight:bold" />
+									<p:selectOneMenu id="productTypeId" value="#{proposalUpdateController.productTypeId}" style="width:190px;"  >
+										<p:ajax event="change" update="offeringId" listener="#{proposalUpdateController.updateOfferingList}" />									
+										<f:selectItem itemLabel="Ürün Tipi Seçiniz..." itemValue="" noSelectionOption="true" />
+										<f:selectItems value="#{proposalUpdateController.productTypeList}" var="productType" itemLabel="#{productType.name}" itemValue="#{productType.id}" />			
+									</p:selectOneMenu>
+									
+									<p:outputLabel for="productSurfaceTypeId" value="Yüzey Tipi:" style="font-weight:bold" />
+									<p:selectOneMenu id="productSurfaceTypeId" value="#{proposalUpdateController.productSurfaceTypeId}" style="width:190px;"  >
+										<p:ajax event="change" update="offeringId" listener="#{proposalUpdateController.updateOfferingList}" />
+										<f:selectItem itemLabel="Yüzey Tipi Seçiniz..." itemValue="" noSelectionOption="true" />
+										<f:selectItems value="#{proposalUpdateController.productSurfaceTypeList}" var="productSurfaceType" itemLabel="#{productSurfaceType.name}" itemValue="#{productSurfaceType.id}" />			
+									</p:selectOneMenu>
+									
+									<p:outputLabel for="productWingTypeId" value="Kanat Tipi:" style="font-weight:bold" />
+									<p:selectOneMenu id="productWingTypeId" value="#{proposalUpdateController.productWingTypeId}" style="width:190px;"  >
+										<p:ajax event="change" update="offeringId" listener="#{proposalUpdateController.updateOfferingList}" />
+										<f:selectItem itemLabel="Kanat Tipi Seçiniz..." itemValue="" noSelectionOption="true" style="width:150px; height:300px;" />
+										<f:selectItems value="#{proposalUpdateController.productWingTypeList}" var="productWingType" itemLabel="#{productWingType.name}" itemValue="#{productWingType.id}" />			
+									</p:selectOneMenu>
+									
+									<p:outputLabel for="productCaseTypeId" value="Kasa Tipi:" style="font-weight:bold" />
+									<p:selectOneMenu id="productCaseTypeId" value="#{proposalUpdateController.productCaseTypeId}" style="width:190px;"  >
+										<p:ajax event="change" update="offeringId" listener="#{proposalUpdateController.updateOfferingList}" />
+										<f:selectItem itemLabel="Kasa Tipi Seçiniz..." itemValue="" noSelectionOption="true" style="width:150px; height:300px;" />
+										<f:selectItems value="#{proposalUpdateController.productCaseTypeList}" var="productCaseType" itemLabel="#{productCaseType.name}" itemValue="#{productCaseType.id}" />			
+										<f:ajax event="change" listener="#{proposalUpdateController.handleCaseTypeChange}" render="dimensionId" />
+									
+									
+									</p:selectOneMenu>
+									
+									<p:outputLabel for="offeringId" value="Kapı Modeli:" style="font-weight:bold"/>
+									<p:selectOneMenu id="offeringId" converter="offerConverter" var="t" 
+													 value="#{proposalUpdateController.newOrderOffering.offering}" style="width:190px" required="true">
+										<p:ajax event="change" listener="#{proposalUpdateController.onOfferingChange}" />
+										<f:selectItem itemLabel="Kapı Modeli Seçiniz..." itemValue="" noSelectionOption="true" />
+										<f:selectItems value="#{proposalUpdateController.offeringList}" var="offering" itemLabel="#{offering.name}" itemValue="#{offering}" />
+										
+										<p:column style="width:80px">
+											<p:graphicImage  name="main/images/kapiResim/#{t.imagePath}" height="120px" width="120px"/>	
+										</p:column>
+										<p:column>
+											<h:outputText value="#{t.name}" />
+										</p:column>
+										
+										
+									</p:selectOneMenu>	
+									
+									
+								</h:panelGrid>
+								<h:panelGrid  columns="2" cellpadding="5">	
+									<p:outputLabel for="dimensionId" value="En/Boy/Duvar(cm):" style="font-weight:bold"/>
+									<h:panelGrid id="dimensionId" columns="4">
+										<p:inputText id="enteredWidth" value="#{proposalUpdateController.newOrderOffering.enteredWidth}" required="true" size="3">
+											<f:validateDoubleRange minimum="1" maximum="1000" />
+											<f:validateLength minimum="2" />
+										</p:inputText>
+										<p:inputText id="enteredHeight" value="#{proposalUpdateController.newOrderOffering.enteredHeight}" required="true" size="3">
+											<f:validateDoubleRange minimum="1" maximum="1000" />
+											<f:validateLength minimum="3" />
+										</p:inputText>
+										<p:inputText id="enteredDepth" value="#{proposalUpdateController.newOrderOffering.enteredDepth}" required="true" size="3" readonly="#{proposalUpdateController.productCaseTypeId == 1}">
+											<f:validateDoubleRange minimum="10" maximum="1000" />
+											<f:validateLength minimum="2" />
+										</p:inputText>
+										
+										<p:commandButton value="Doğrula" id="validateDimension" 
+														 process="dimensionId" 
+														 update="finalDimensionId" 
+														 actionListener="#{proposalUpdateController.validateDimension}"/>
+										
+									</h:panelGrid>
+									<p:outputLabel for="finalDimensionId" value="Üretim Ölçüleri:" style="font-weight:bold"/>
+									<p:outputLabel id="finalDimensionId" value="#{proposalUpdateController.productDimensionInfo}" style="font-weight:bold"/>
+									
+									
+											
+									<h:outputLabel for="quantity" value="Adet:" style="font-weight:bold" />
+									<h:panelGrid columns="3">
+										<p:inputText id="quantity" value="#{proposalUpdateController.newOrderOffering.quantity}" required="true">
+												<f:validateDoubleRange minimum="1" maximum="1000" />
+							       		</p:inputText>
+										<p:commandButton value="Kapı Ekle" id="addOrderOfferingBtn" process="addOrderOffering" 
+													     update="addOrderOffering,proposalHistoryForm,proposalOfferingListForm,growl" 
+						           					 	 actionListener="#{proposalUpdateController.addOrderOffering}" styleClass="ui-priority-primary" />
+									</h:panelGrid>
+									<h:outputLabel for="description" value="Notlar:" style="font-weight:bold" />
+									<p:inputTextarea id="description" value="#{proposalUpdateController.newOrderOffering.description}" rows="2" cols="30" autoResize="false" />
+								</h:panelGrid>
+							</h:panelGrid>
+						</p:fieldset>
+					</h:form>
+		        </p:tab>
+		        <p:tab title="Nakliye-Montaj Bilgisi">
+		        	<h:form id="transportAndInstallationForm">
+			        	<p:fieldset collapsed="false" toggleable="false">
+							<h:panelGrid columns="2" cellpadding="5">
+								<h:panelGrid columns="2" cellpadding="5">
+								
+									<h:outputLabel for="transportRequested" value="Nakliye İsteniyormu :" style="font-weight:bold" />
+									<p:selectBooleanCheckbox id="transportRequested" value="#{proposalUpdateController.proposal.order.transportRequested}">
+										<p:ajax event="change" update="transportAmount,transportDescription" />
+									</p:selectBooleanCheckbox>
+			
+									<h:outputLabel for="transportAmount" value="Nakliye Maliyeti:" style="font-weight:bold" />
+									<p:inputNumber id="transportAmount" readonly="#{proposalUpdateController.proposal.order.transportRequested==false}"
+										value="#{proposalUpdateController.proposal.order.transportAmount}" symbol=" TL" symbolPosition="s" decimalSeparator="," thousandSeparator="." />
+									
+									<h:outputLabel for="transportDescription" value="Nakliye Notlar:" style="font-weight:bold" />
+									<p:inputTextarea id="transportDescription" readonly="#{proposalUpdateController.proposal.order.transportRequested==false}"
+										value="#{proposalUpdateController.proposal.order.transportDescription}" rows="5" cols="30" maxlength="250" autoResize="false" />
+										
+								</h:panelGrid>
+								<h:panelGrid columns="2" cellpadding="5">	
+			
+									<h:outputLabel for="installationRequested" value="Montaj İsteniyormu :" style="font-weight:bold" />
+									<p:selectBooleanCheckbox id="installationRequested" value="#{proposalUpdateController.proposal.order.installationRequested}" > 
+										<p:ajax event="change" update="installationAmount,installationDescription"/>
+									</p:selectBooleanCheckbox>
+								
+									<h:outputLabel for="installationAmount" value="Montaj Maliyeti:" style="font-weight:bold" />
+									<p:inputNumber id="installationAmount" readonly="#{proposalUpdateController.proposal.order.installationRequested==false}"
+										value="#{proposalUpdateController.proposal.order.installationAmount}" symbol=" TL" symbolPosition="s" decimalSeparator="," thousandSeparator="." />
+										
+									<h:outputLabel for="installationDescription" value="Montaj Notlar:" style="font-weight:bold" />
+									<p:inputTextarea id="installationDescription" readonly="#{proposalUpdateController.proposal.order.installationRequested==false}"
+										value="#{proposalUpdateController.proposal.order.installationDescription}" rows="5" cols="30" maxlength="250" autoResize="false" />
+									
+								</h:panelGrid>
+							</h:panelGrid>
+
+					        <p:commandButton value="Bilgileri Güncelle" 
+					        				 rendered="#{proposalUpdateController.proposal.order.orderStatus.code == 'DRAFT'}"
+					        				 process="transportAndInstallationForm" 
+											 update="proposalHistoryForm:proposalHistoryDT,proposalOfferingListForm:orderOfferingDT,transportAndInstallationForm,growl" 
+				           					 actionListener="#{proposalUpdateController.saveTransportationAndInstallInfo}"/>
+						</p:fieldset>					 
+					</h:form>
+		        </p:tab>
+		        <p:tab title="Finansal Bilgiler ">
+		        	<h:form id="paymentInfoForm">
+						<p:fieldset collapsed="false" toggleable="false">
+							<h:panelGrid columns="2" cellpadding="5">
+								<h:outputLabel for="paymentInformation" value="Ödeme Bilgileri:" style="font-weight:bold" />
+								<p:inputTextarea id="paymentInformation"  value="#{proposalUpdateController.proposal.order.paymentInformation}" rows="5" cols="30" maxlength="250" autoResize="false" />
+							
+								<p:outputLabel for="currency" value="Kur Bilgisi:" style="font-weight:bold"/>
+								<p:selectOneMenu id="currency" value="#{proposalUpdateController.currencyCode}" style="width:150px" required="true">
+									<f:selectItems value="#{proposalUpdateController.currencyList}" var="currency" itemLabel="#{currency.currencyCode} - #{currency.forexBuying}" itemValue="#{currency.currencyCode}" />
+								</p:selectOneMenu>
+								
+								<h:outputLabel for="currencyValue" value="Son Kaydedilen Kur Değeri:" style="font-weight:bold" />
+								<p:inputText   id="currencyValue"  value="#{proposalUpdateController.proposal.order.currencyCode} - #{proposalUpdateController.proposal.order.currencyValue}" readonly="true" />
+							</h:panelGrid>
+	
+					        <p:commandButton value="Bilgileri Güncelle" 
+					        				 rendered="#{proposalUpdateController.proposal.order.orderStatus.code == 'DRAFT'}"
+					        				 process="paymentInfoForm" 
+											 update="paymentInfoForm,proposalOfferingListForm,growl" 
+				           					 actionListener="#{proposalUpdateController.savePaymentInfo}"/>
+						</p:fieldset>					 
+					</h:form>
+				</p:tab>
+		        <p:tab title="Çıktı-Rapor İşlemleri">
+					<h:form id="exportEmailForm">
+						<p:fieldset collapsed="false" toggleable="false">
+							<h:panelGrid columns="3" cellpadding="5">
+								<h:panelGrid columns="2" cellpadding="5">
+									<h:outputLabel for="lastUpdateDate" value="Son Güncelleme Tarihi:" style="font-weight:bold" />
+									<p:inputText   id="lastUpdateDate"  value="#{proposalUpdateController.proposal.lastUpdateDate}" readonly="true">
+										<f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
+									</p:inputText>
+									
+									<h:outputLabel for="lastSendDate" value="Son Gönderim Tarihi:" style="font-weight:bold" />
+									<p:inputText   id="lastSendDate"  value="#{proposalUpdateController.proposal.lastSendDate}" readonly="true">
+										<f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
+									</p:inputText>
+								</h:panelGrid>
+								
+								<h:panelGrid columns="2" cellpadding="5">
+									<h:outputLabel for="revisionNo" value="Revizyon No:" style="font-weight:bold" />
+									<p:inputText   id="revisionNo"  value="#{proposalUpdateController.proposal.revisionNo}" readonly="true" />
+									
+									<h:outputLabel for="toEmail" value="Kontak Mail:" style="font-weight:bold" />
+									<p:inputText   id="toEmail"  value="#{proposalUpdateController.proposal.order.customerContact.email}" size="40" readonly="true" />
+								</h:panelGrid>
+								
+								
+							</h:panelGrid>
+						</p:fieldset>
+					</h:form>
+					<p:commandButton value="Teklif Raporu İndir" ajax="false" process="@this" immediate="true" update="exportEmailForm">
+						<p:fileDownload value="#{proposalUpdateController.downloadProposalReport}" />
+					</p:commandButton>
+					<p:commandButton value="Teklifi Email Gönder" 
+			        				 rendered="#{proposalUpdateController.proposal.order.orderStatus.code == 'DRAFT'}"
+			        				 process="@this" 
+			        				 immediate="true"
+									 update="growl" 
+		           					 actionListener="#{proposalUpdateController.emailProposalReport}"/>
+
+				</p:tab>
+		    </p:tabView>
+		</h:form>
+		
+		
+		
+		
+		
+		<h:form id="proposalOfferingListForm">
+			<p:dataTable id="orderOfferingDT" var="orderOffering" 
+				value="#{proposalUpdateController.orderOfferingList}" 
+				reflow="true"
+				rows="100" 
+				emptyMessage="Teklife eklenmiş Kapı Bulunamadı.">
+				<f:facet name="header">
+					Teklif Kalemleri
+				</f:facet>
+				<p:column headerText="Ürün Resmi"  width="150">
+					<p:graphicImage  name="main/images/kapiResim/#{orderOffering.offering.imagePath}" height="150px" width="150px" />
+				</p:column>
+				<p:column headerText="Ürün Tipi">
+					<h:outputText value="#{orderOffering.offering.productType.name}" />
+				</p:column>
+				<p:column headerText="Yüzey Tipi">
+					<h:outputText value="#{orderOffering.offering.productSurfaceType.name}" />
+				</p:column>
+				<p:column headerText="Kanat Tipi">
+					<h:outputText value="#{orderOffering.offering.productWingType.name}" />
+				</p:column>
+				<p:column headerText="Ürün Adı">
+					<h:outputText value="#{orderOffering.offering.name}" />
+				</p:column>
+
+				<p:column headerText="Adet">
+					<h:outputText value="#{orderOffering.quantity}" />
+				</p:column>
+				
+				<p:column headerText="En/Boy/Duvar">
+					<h:outputText value="#{orderOffering.productionWidth} / #{orderOffering.productionHeight} / #{orderOffering.enteredDepth}" />
+				</p:column>
+				
+				<p:column headerText="Birim Fiyat">
+					<h:outputText value="#{proposalUpdateController.round(orderOffering.instanceAmount / proposalUpdateController.proposal.order.currencyValue,2)} #{proposalUpdateController.proposal.order.currencyCode}"   style="float:right"/>
+				</p:column>
+				
+				<p:column headerText="Birim İndirim">
+					<h:outputText value="#{proposalUpdateController.round(orderOffering.instanceDiscount/ proposalUpdateController.proposal.order.currencyValue,2)} #{proposalUpdateController.proposal.order.currencyCode}" style="float:right"/>
+				</p:column>
+				
+				<p:column headerText="Ek Ücret">
+					<h:outputText value="#{proposalUpdateController.round(orderOffering.instanceIncrease/ proposalUpdateController.proposal.order.currencyValue,2)} #{proposalUpdateController.proposal.order.currencyCode}" style="float:right"/>
+				</p:column>
+				
+				<p:column headerText="Toplam Fiyat">
+					<h:outputText value="#{proposalUpdateController.round(orderOffering.totalAmount/ proposalUpdateController.proposal.order.currencyValue,2)} #{proposalUpdateController.proposal.order.currencyCode}" style="float:right"/>
+				</p:column>
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton action="proposalOfferingUpdate" icon="ui-icon-search" title="View">
+						<f:param name="orderOfferingId" value="#{orderOffering.id}" />
+					</p:commandButton>
+				</p:column>
+				<p:column style="width:32px;text-align: center" rendered="#{proposalUpdateController.proposal.order.orderStatus.code == 'DRAFT'}">
+					<p:commandButton update="orderOfferingDT,proposalHistoryForm,createOrderForm" process="orderOfferingDT" icon="ui-icon-close" actionListener="#{proposalUpdateController.deleteOrderOffering(orderOffering)}">
+						<p:confirm header="Teklif Kalemi Silinmesi" message="Teklifteki Bu Kalem Silinecektir Eminmisiniz??" icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="Evet" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="Hayır" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</p:column>
+				<p:columnGroup type="footer">
+		            <p:row>
+		                <p:column colspan="10" style="text-align:right" footerText="Kapı Toplam:" /><p:column footerText="#{proposalUpdateController.getTotalCostOfOrderOfferings()} #{proposalUpdateController.proposal.order.currencyCode}" style="text-align: right" />
+		            </p:row>
+		            <p:row>    
+		                <p:column colspan="10" style="text-align:right" footerText="Genel İndirim:" /><p:column footerText="-#{proposalUpdateController.getFinalDiscount()} #{proposalUpdateController.proposal.order.currencyCode}" style="text-align: right"/>
+		            </p:row>
+		            <p:row>
+		                <p:column colspan="10" style="text-align:right" footerText="Kurulum:" /><p:column footerText="#{proposalUpdateController.getInstallationAmount()} #{proposalUpdateController.proposal.order.currencyCode}" style="text-align: right" />
+		            </p:row>
+		            <p:row>    
+		                <p:column colspan="10" style="text-align:right" footerText="Nakliye:" /><p:column footerText="#{proposalUpdateController.getTransportAmount()} #{proposalUpdateController.proposal.order.currencyCode}" style="text-align: right"/>
+		            </p:row>
+		            <p:row>
+		                <p:column colspan="10" style="text-align:right" footerText="KDV:" /><p:column footerText="#{proposalUpdateController.getTotalTax()} #{proposalUpdateController.proposal.order.currencyCode}" style="text-align: right" />
+		            </p:row>
+		            <p:row>    
+		                <p:column colspan="10" style="text-align:right" footerText="Genel Toplam:" /><p:column footerText="#{proposalUpdateController.getGeneralSum()} #{proposalUpdateController.proposal.order.currencyCode}" style="text-align: right"/>
+		            </p:row>
+		        </p:columnGroup>
+		   	</p:dataTable>
+		</h:form>
+		<br/>
+		<h:form id="proposalHistoryForm">
+			<p:dataTable id="proposalHistoryDT" var="proposalHistory" 
+				value="#{proposalUpdateController.proposalHistoryList}" 
+				scrollable="true" scrollHeight="300"
+				emptyMessage="Teklife ait Tarihçe Kayıtları Bulunamadı.">
+				<f:facet name="header">
+					Teklif Tarihçesi
+				</f:facet>
+				<p:column headerText="İşlem Tipi">
+					<h:outputText value="#{proposalHistory.operation}" />
+				</p:column>
+				
+				<p:column headerText="İşlem Bilgisi">
+					<h:outputText value="#{proposalHistory.operationInfo}" />
+				</p:column>
+				
+				<p:column headerText="Eski Değer">
+					<h:outputText value="#{proposalHistory.oldValue}" />
+				</p:column>
+
+				<p:column headerText="Yeni Değer">
+					<h:outputText value="#{proposalHistory.newValue}" />
+				</p:column>
+				
+				<p:column headerText="İşlem Tarihi">
+					<h:outputText value="#{proposalHistory.updateDate}" />
+				</p:column>
+				
+				<p:column headerText="Kullanıcı">
+					<h:outputText value="#{proposalHistory.user.fullname}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

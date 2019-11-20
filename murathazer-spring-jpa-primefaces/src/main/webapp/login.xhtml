@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<meta http-equiv="Last-Modified" content="0" />
+	<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title><ui:insert name="title">
+            BTorc Otomasyon Sistemleri
+        </ui:insert></title>
+
+	<link rel="stylesheet" href="css/paper.min.css" />
+	<link rel="stylesheet" href="css/font-awesome.min.css" />
+
+</h:head>
+<h:body>
+
+	<div class="row">
+		<br />
+	</div>
+	<div class="row">
+		<br />
+	</div>
+	<div class="row">
+		<br />
+	</div>
+	<div class="row">
+		<br />
+	</div>
+	<div class="row">
+		<br />
+	</div>
+	<div class="row">
+		<br />
+	</div>
+	<div class="container login-form">
+		<div class="col-md-7 col-md-offset-2">
+			<div class="panel panel-primary">
+				<div class="panel-body">
+					<br />
+					<div class="row vertical-align">
+						<div class="col-md-5">
+							<img
+								src="#{facesContext.externalContext.requestContextPath}/images/btork.png"
+								class="circle img-responsive" />
+						</div>
+						<div class="col-md-6">
+							<h:form id="loginForm" class="form-horizontal">
+
+								<p:growl id="growl" showDetail="false" autoUpdate="true" closable="true" globalOnly="false" sticky="true" />
+								<div class="form-group">
+									<h:outputLabel for="txtUsername" value="Kullanıcı Adı:" styleClass="col-md-4 control-label" />
+									<div class="col-md-8">
+										<p:inputText id="txtUsername" styleClass="form-control"
+											required="true" requiredMessage="Kullanıcı adı zorunludur"
+											value="#{authenticationController.username}">
+											<p:focus for="txtUsername" />
+										</p:inputText>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<h:outputLabel for="txtPassword" value="Şifre:" styleClass="col-md-4 control-label" />
+									<div class="col-md-8">
+										<p:password id="txtPassword" styleClass="form-control"
+											value="#{authenticationController.password}" required="true"
+											requiredMessage="Şifre zorunludur" />
+									</div>
+								</div>
+
+								<div class="form-group">
+									<div class="col-md-4 col-md-offset-8">
+										<p:commandButton styleClass="btn btn-xs btn-primary"
+											value="Giriş Yap" action="#{authenticationController.login}"
+											icon="fa fa-key" iconPos="right" update="loginForm" />
+									</div>
+								</div>
+							</h:form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</h:body>
+</html>

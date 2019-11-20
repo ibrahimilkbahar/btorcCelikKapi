@@ -1,0 +1,106 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">
+        Kullanıcı İşlemleri
+    </ui:define>
+
+
+
+	<ui:define name="implementation">
+		<h:form id="userForm">
+		
+			<h:panelGrid columns="2" cellpadding="5">
+				 
+
+		
+				<p:commandButton update=":userForm:userOP"  ajax="true" id="newUserBtn"
+										action="#{userController.resetUser()}"  
+										oncomplete="PF('userDLG').show()" value="Yeni Kullanıcı"/>
+				<br/>
+			</h:panelGrid>
+			<p:dataTable id="userDT" var="user" 
+				value="#{userController.userList}" 
+				emptyMessage="Kullanıcı bulunamadı."
+				rows="20" >
+				<f:facet name="header">
+					Kullanıcılar
+				</f:facet>
+				
+				<p:column style="width:32px;text-align: center">
+		             <p:commandButton update=":userForm:userOP" 
+		             				action="#{userController.loadUser(user)}" 
+		             				oncomplete="PF('userDLG').show()" icon="ui-icon-search" title="View">
+		                <f:setPropertyActionListener value="#{user}" target="#{userController.newUser}" />
+		            </p:commandButton>
+		        </p:column>
+				
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton update="userDT" process="userDT" icon="ui-icon-close" actionListener="#{userController.lockUser(user)}">
+						<p:confirm header="Kullanıcıyı Kilitleme" message="Kullanıcı Pasif edilecektir Eminmisiniz??" icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="Evet" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="Hayır" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</p:column>
+				
+				<p:column  headerText="Giriş Adı">
+					<h:outputText value="#{user.loginName}" />
+				</p:column>
+				<p:column  headerText="Kullanıcı Tam Adı">
+					<h:outputText value="#{user.fullname}" />
+				</p:column>
+				<p:column  headerText="Kullanıcı Email">
+					<h:outputText value="#{user.email}" />
+				</p:column>
+				<p:column  headerText="Son Login Tarihi">
+					<h:outputText value="#{user.lastLogin}" />
+				</p:column>
+				<p:column  headerText="Kullanıcı Aktif mi?">
+					<h:outputText value="#{user.isActive ? 'Evet': 'Hayır'}" />
+				</p:column>
+				<p:column  headerText="Kullanıcı Bayi mi?">
+					<h:outputText value="#{user.isDealer ? 'Evet': 'Hayır'}" />
+				</p:column>
+				
+			</p:dataTable>
+ 
+			
+			<p:dialog header="Kullanıcı Girişi" widgetVar="userDLG" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+		        <p:outputPanel id="userOP" style="text-align:left;">
+		            <h:panelGrid  columns="2" >
+						<h:outputLabel for="loginName" value="Giriş Adı:" style="font-weight:bold" />
+						<p:inputText id="loginName" value="#{userController.newUser.loginName}"/>
+						
+						<h:outputLabel for="fullname" value="Kullanıcı Tam Adı:" style="font-weight:bold" />
+						<p:inputText id="fullname" value="#{userController.newUser.fullname}"/>
+						
+						<h:outputLabel for="email" value="Kullanıcı Email:" style="font-weight:bold" />
+						<p:inputText id="email" value="#{userController.newUser.email}"/>
+										
+						<h:outputLabel for="isActive" value="Aktif mi:" style="font-weight:bold" />
+						<p:selectBooleanButton id="isActive" value="#{userController.newUser.isActive}" onLabel="Evet" offLabel="Hayır" />
+	
+						<h:outputLabel for="isDealer" value="Bayi mi:" style="font-weight:bold" />
+						<p:selectBooleanButton id="isDealer" value="#{userController.newUser.isDealer}" onLabel="Evet" offLabel="Hayır" />
+		            </h:panelGrid>
+		            <p:pickList  
+							value="#{userController.permittedScreenList}"
+							var="property"
+							itemLabel="#{property.name}"
+							itemValue="#{property.id}">
+					</p:pickList>
+		            <p:commandButton value="Kullanıcı Kaydet" id="saveUser" process="userOP" update="userDT" 
+		            				oncomplete="PF('userDLG').hide();"
+		            				actionListener="#{userController.saveUser}" styleClass="ui-priority-primary" />
+		        </p:outputPanel>
+		    </p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

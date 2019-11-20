@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: spring-jpa-primefaces
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: ev
+Implementation-Vendor-Id: tr.com.mindworks
+Build-Jdk: 1.8.0_231
+Implementation-URL: http://projects.spring.io/spring-boot/spring-jpa-p
+ rimefaces/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+

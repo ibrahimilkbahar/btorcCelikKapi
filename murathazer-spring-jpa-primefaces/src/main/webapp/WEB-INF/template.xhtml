@@ -1,0 +1,321 @@
+<!DOCTYPE html [
+    <!ENTITY nbsp "&#160;">
+    <!ENTITY bull "&#8226;">
+    <!ENTITY copy "&#169;">
+]>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:h="http://java.sun.com/jsf/html" 
+	  xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:ui="http://java.sun.com/jsf/facelets" 
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<link rel="shortcut icon" type="image/png" href="#{request.contextPath}/resources/main/images/favicon.png" />
+	</f:facet>
+
+	<title>BTORC Otomasyon Sistemi</title>
+	<!-- TEMAYI DEGISTIRMEK ICIN AFTERDARK YAZAN YERE HERHANGI BIR PRIMEFACES TEMA ISMI YAZILMALI -->
+ 	<link type="text/css" rel="stylesheet" href="/mindworks/swf/javax.faces.resource/theme.css?ln=primefaces-omega" />
+	<h:outputStylesheet name="main/css/showcase.css" />
+	<h:outputStylesheet name="main/css/perfect-scrollbar.css" />
+	<h:outputStylesheet name="main/css/sh.css" />
+	<h:outputScript name="jquery/jquery.js" library="primefaces" />
+	<h:outputScript name="jquery/jquery-plugins.js" library="primefaces" />
+	<h:outputScript name="main/js/perfect-scrollbar.js" />
+	<h:outputScript name="main/js/showcase.js" />
+	<ui:insert name="head" />
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+  		_gaq.push(['_setAccount', 'UA-12200033-1']);
+  		_gaq.push(['_trackPageview']);
+
+  		(function() {
+   			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  		})();
+	</script>
+
+	<script type="text/javascript">
+        PrimeFaces.locales['tr'] = {
+            closeText: 'kapat',
+            prevText: 'geri',
+            nextText: 'ileri',
+            currentText: 'bugün',
+            monthNames: ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
+            monthNamesShort: ['Oca','Şub','Mar','Nis','May','Haz', 'Tem','Ağu','Eyl','Eki','Kas','Ara'],
+            dayNames: ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'],
+            dayNamesShort: ['Pz','Pt','Sa','Ça','Pe','Cu','Ct'],
+            dayNamesMin: ['Pz','Pt','Sa','Ça','Pe','Cu','Ct'],
+            weekHeader: 'Hf',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: '',
+            timeOnlyTitle: 'Zaman Seçiniz',
+            timeText: 'Zaman',
+            hourText: 'Saat',
+            minuteText: 'Dakika',
+            secondText: 'Saniye',
+            ampm: false,
+            month: 'Ay',
+            week: 'Hafta',
+            day: 'Gün',
+            allDayText : 'Tüm Gün'
+        };
+    </script>
+    
+    <style type="text/css">
+table.hovertable {
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #999999;
+	border-collapse: collapse;
+}
+table.hovertable th {
+	background-color:#c3dde0;
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #a9c6c9;
+}
+table.hovertable tr {
+	background-color:#d4e3e5;
+}
+table.hovertable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #a9c6c9;
+}
+
+.odd {
+    background-color: rgb(230, 230, 231);
+}
+.even {
+   background-color: rgb(255, 255, 255);
+}
+
+</style>
+			
+</h:head>
+
+<h:body style="font-size: 12px;">
+	<p:importConstants type="tr.com.mindworks.model.TProductType" />
+	<!-- PC CONTENT STARTS HERE-->
+	
+	 
+					
+					
+	<div class="PC">
+
+		<div id="MENUSIDE">
+			<div id="MENUSIDEindent">
+				
+				<div class="MenuSideMainLink bordersOfMenuSide">
+					<h:graphicImage name="main/images/zoom.svg" class="zoomIcon" />
+					<input id="menuSearch" type="text" placeholder="Arama" class="boldFont fontSize14 mustClose searchInput" />
+				</div>
+				<ui:fragment rendered="#{visit.user.permittedPages.contains('#10#') }">
+					<span id="SubMenu-Ajax" class="MenuSideMainLink bordersOfMenuSide" onclick="Showcase.openSubMenu(this);">
+						<h:graphicImage name="main/images/mono/ajaxCore.svg" /> 
+						<h:graphicImage styleClass="hiddenIcons" name="main/images/mono/ajaxCoreBlue.svg" />
+						<span class="MainLinkText">Müşteri İşlemleri</span>
+					</span>
+					<div class="SubMenuLinkContainer">
+						<a class="SubMenuLink" href="#{request.contextPath}/swf/customer">&bull; Müşteri Sorgulama ve Oluşturma</a>
+					</div>
+				</ui:fragment>
+ 
+ 				<ui:fragment rendered="#{visit.user.permittedPages.contains('#20#') }">
+					<span id="SubMenu-Button" class="MenuSideMainLink bordersOfMenuSide" onclick="Showcase.openSubMenu(this);">
+						<h:graphicImage name="main/images/mono/input.svg" />
+						<h:graphicImage styleClass="hiddenIcons" name="main/images/mono/inputBlue.svg" />
+						<span class="MainLinkText">Teklif İşlemleri</span>
+					</span>
+					<div class="SubMenuLinkContainer">
+					
+						<ui:fragment rendered="#{visit.user.permittedPages.contains('#21#') }">
+							<a class="SubMenuLink" href="#{request.contextPath}/swf/proposal">&bull; Teklif Oluşturma / Listeleme</a> 
+						</ui:fragment>
+						<ui:fragment rendered="#{visit.user.permittedPages.contains('#22#') }">
+							<a class="SubMenuLink" href="#{request.contextPath}/swf/proposalApprove">&bull; Onay Bekleyen Teklifler</a> 
+						</ui:fragment>
+						<ui:fragment rendered="#{visit.user.permittedPages.contains('#23#') }">
+							<a class="SubMenuLink" href="#{request.contextPath}/swf/order">&bull; Sipariş Sorgulama</a> 
+						</ui:fragment>
+					
+					</div>
+				</ui:fragment>
+				
+				<ui:fragment rendered="#{visit.user.permittedPages.contains('#40#') }">
+					<span id="SubMenu-Input" class="MenuSideMainLink bordersOfMenuSide" onclick="Showcase.openSubMenu(this);">
+						<h:graphicImage name="main/images/mono/file.svg" /> 
+						<h:graphicImage styleClass="hiddenIcons" name="main/images/mono/fileBlue.svg" />
+						<span class="MainLinkText">Tanım İşlemleri</span>
+					</span>
+					<div class="SubMenuLinkContainer">
+						
+						<ui:fragment rendered="#{visit.user.permittedPages.contains('#41#') }">
+							<a class="SubMenuLink" href="#{request.contextPath}/swf/offering">&bull; Ürün Tanımlama</a>
+						</ui:fragment>	
+						<ui:fragment rendered="#{visit.user.permittedPages.contains('#42#') }">	  
+							<a class="SubMenuLink" href="#{request.contextPath}/swf/property">&bull; Özellik Tanımlama</a>
+						</ui:fragment>	
+						<ui:fragment rendered="#{visit.user.permittedPages.contains('#43#') }">	
+							<a class="SubMenuLink" href="#{request.contextPath}/swf/dimension">&bull; Kapı-Boyut Tanımlama</a>
+						</ui:fragment>	
+						
+					</div>
+				</ui:fragment>
+				
+				<ui:fragment rendered="#{visit.user.permittedPages.contains('#50#') }">
+					<span id="SubMenu-Data" class="MenuSideMainLink bordersOfMenuSide" onclick="Showcase.openSubMenu(this);">
+						<h:graphicImage name="main/images/mono/dialogFramework.svg" /> 
+						<h:graphicImage styleClass="hiddenIcons" name="main/images/mono/dialogFrameworkBlue.svg" />
+						<span class="MainLinkText">Kullanıcı İşlemleri</span>
+					</span>
+					<div class="SubMenuLinkContainer">
+						<ui:fragment rendered="#{visit.user.permittedPages.contains('#51#') }">	
+							<a class="SubMenuLink" href="#{request.contextPath}/swf/userMng">&bull; Kullanıcı Oluşturma / Listeleme</a>
+						</ui:fragment>
+						
+						<ui:fragment rendered="#{visit.user.permittedPages.contains('#52#') }">	 
+							<a class="SubMenuLink" href="#{request.contextPath}/swf/updatePassword">&bull; Şifre Güncelleme</a>
+						</ui:fragment>
+					</div>
+				</ui:fragment>
+
+				<ui:fragment rendered="#{visit.user.permittedPages.contains('#60#') }">
+					<span id="SubMenu-Data" class="MenuSideMainLink bordersOfMenuSide" onclick="Showcase.openSubMenu(this);">
+						<h:graphicImage name="main/images/mono/data.svg" /> 
+						<h:graphicImage styleClass="hiddenIcons" name="main/images/mono/dataBlue.svg" />
+						<span class="MainLinkText">Raporlar</span>
+					</span>
+					<div class="SubMenuLinkContainer">
+						<a class="SubMenuLink" href="#{request.contextPath}/swf/dimension">&bull; Rapor 1</a>
+						<a class="SubMenuLink" href="#{request.contextPath}/swf/dimension">&bull; Rapor 2</a>
+						<a class="SubMenuLink" href="#{request.contextPath}/swf/dimension">&bull; Rapor 3</a>
+						<a class="SubMenuLink" href="#{request.contextPath}/swf/dimension">&bull; Rapor 4</a>
+					</div>
+				</ui:fragment>
+								 
+			</div>
+		</div>
+
+		<script type="text/javascript">
+	        restoreMenuState();
+	    </script>
+
+		<div id="CONTENTSIDE">
+			<div id="CONTENTSIDEindent">
+
+				<!-- header bar start-->
+				<div class="ContentSideSections" id="PFTopLinksCover">
+ 					
+ 					<a id="LOGOTEXTSIDE" href="#{request.contextPath}/index.xhtml"> 
+						<h:graphicImage name="main/images/logo.png" style="height:40px;" styleClass="floatLeft" />
+					</a> 
+					
+
+					<div class="col-md-9" align="right">
+						
+					    <p:button icon="fa fa-sign-in" value="Çıkış"   href="/logout"/>
+					    
+					</div>
+					<div class="col-md-3" align="right">
+					    <span style="color: black; font-weight: bold">#{visit.user.fullname}</span>
+					</div>
+            
+					
+				 
+					<a id="mobile-menu-btn" href="#">
+                    	<i class="fa fa-bars"></i>
+                	</a>
+					<div class="mobileLogoCover">
+						<h:graphicImage name="main/images/logo.png" style="height:40px;" styleClass="floatLeft marginRight10" />
+					</div>
+					
+
+
+				</div>
+				<!-- header bar end-->
+
+				<div class="content-container">
+					<ui:insert name="content">
+
+						<ui:insert name="subsubmenu"></ui:insert>
+
+						<div class="ContentSideSections">
+							<div class="Content100 overHidden TextShadow">
+								<span class="fontSize30 TextShadow orange regularFont marginBottom20 dispBlock">
+									<ui:insert name="title" />
+								</span> 
+								<span class="defaultText dispTable">
+									<ui:insert name="description" /> 
+								</span>
+							</div>
+						</div>
+
+						<div class="ContentSideSections Implementation">
+							<ui:insert name="implementation" />
+						</div>
+
+						<div id="SourceContentSide" class="ContentSideSections Source">
+							<div class="Content100 overHidden TextShadow">
+								<span class="defaultText"> <span class="fontSize18 logoBlueText"> <ui:insert name="source" />
+								</span>
+								</span>
+							</div>
+						</div>
+
+					</ui:insert>
+				</div>
+
+				<!-- footer start-->
+				<div class="ContentSideSections">
+					<span class="floatLeft fontSize14 gray"> <a href="http://www.btorc.com.tr">www.btorc.com.tr</a>, Copyright &copy; 2017<br />
+					
+					
+					</span>
+					<div style="clear: both" />
+					
+					
+				</div>
+				<!-- footer end-->
+
+			</div>
+		</div>
+
+	</div>
+	<!-- PC CONTENT END-->
+
+	<ui:insert name="status">
+		<p:growl id="growl" showDetail="true" sticky="true" />
+		
+		<p:ajaxStatus style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">
+			
+			<f:facet name="start">
+				<p:graphicImage name="main/images/loader.gif" />
+			</f:facet>
+
+			<f:facet name="complete">
+				<h:outputText value="" />
+			</f:facet>
+		</p:ajaxStatus>
+	</ui:insert>
+
+	<ui:insert name="highlight">
+		<h:outputScript name="main/js/sh.js" target="body" />
+	</ui:insert>
+
+	<ui:insert name="body"></ui:insert>
+</h:body>
+</html>

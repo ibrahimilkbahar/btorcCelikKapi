@@ -1,0 +1,1215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TeklifRaporSon" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c319cddf-da6b-4d3f-b673-742b57ec0a44">
+	<property name="ireport.zoom" value="5.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="1008"/>
+	<parameter name="Id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IMG_PATH" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+    @row_number:=@row_number + 1 AS row_number, aa.*
+FROM
+    vTeklif aa,
+    (SELECT @row_number:=0) AS t
+where aa.ID = $P{Id}
+ORDER BY aa.Id;]]>
+	</queryString>
+	<field name="row_number" class="java.lang.Double"/>
+	<field name="InstallationAmount" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TransportAmount" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TotalCost" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FinalDiscount" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TaxValue" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FinalResult" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="OrderNo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="OrderDate" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PaymentInformation" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ProposalNo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ProposalDate" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="LastSendDate" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="LastUpdateDate" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="RevisionDate" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="RevisionNo" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CurrencyCode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CurrencyValue" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="_InstallationAmount" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="_TransportAmount" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="_FinalDiscount" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="_TotalCost" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="InstallationDescription" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="InstallationRequested" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TransportRequested" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TransportDescription" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CustomerFullName" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="IsCorporate" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TaxOfficeAndNo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Phone" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Fax" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Email" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CustomerContact" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CustomerContactEmail" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ContactPosition" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Address1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Address2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ProjectName" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DeliveryAddress1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DeliveryAddress2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CommitmentDate" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SalesResponsible" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Quantity" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="InstanceAmount" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TotalAmount" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Dimension" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="EnteredDimension" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ImagePath" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="OrderOfferingID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="OfferingName" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ProductType" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ProductSurfaceType" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ProductWingType" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ProductCaseType" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="OrderOfferingDescription" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PropertyValueText" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<title>
+		<band height="201" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="160" height="42" uuid="59043ea6-a0eb-471b-9a81-8a538574196d"/>
+				<imageExpression><![CDATA[$P{IMG_PATH}+"logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="160" y="0" width="234" height="42" uuid="f94824d2-1ae7-4f09-8833-a029c2302771"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="24" isBold="true" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[FİYAT TEKLİFİ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="394" y="22" width="50" height="11" uuid="2cc22e26-4ed6-4b3e-996b-1e79d91a8c00"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Revizyon No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="394" y="0" width="50" height="11" uuid="a293edcb-5ef6-4fef-8c8a-922f255c7261"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Teklif Tarihi:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="394" y="33" width="50" height="11" uuid="01715f10-4b0a-44cc-9230-31159a3aa02c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Revizyon Tarihi:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="394" y="11" width="50" height="11" uuid="bbc3a0f1-95b4-415c-b806-f4fbcedf2601"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Teklif No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="43" width="46" height="7" uuid="77ff019c-96da-4b8c-b906-88bdfbee21c5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="4" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Vergi Dairesi:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="50" width="46" height="11" uuid="5489a726-c8c7-4cde-9afc-c6ba514cd5d6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="4" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[IBAN :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="61" width="46" height="7" uuid="20e4d989-0735-47f4-a595-28b69fb822da"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="4" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Fabrika Adresi:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="68" width="46" height="7" uuid="513c762c-2841-47b3-9c02-47777cd28e2e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="4" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Tel: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="75" width="46" height="7" uuid="bbc9a3c2-71c6-4f5f-9808-c8ba848c51ae"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="4" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Faks:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="61" width="110" height="7" uuid="2737be06-f0f7-407f-8747-962f75d9b589"/>
+				<textElement verticalAlignment="Middle">
+					<font size="4" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Sincan OSB Tataristan Caddesi NO:3 Sincan / Ankara]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="68" width="110" height="7" uuid="ab86c1e9-ef60-4c75-84af-390bb756e71a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="4" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[+90 444 8672]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="50" width="110" height="11" uuid="aa2f4f25-61fd-4102-9f35-5a2804fdaba1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="4" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ZİRAAT BANKASI FATİH ŞUBESİ                                          TR22 0001 0025 7168 4861 5950 03]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="75" width="110" height="7" uuid="2e9e52f0-52c5-4fab-b675-f14480c4b766"/>
+				<textElement verticalAlignment="Middle">
+					<font size="4" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[+90 312 267 59 60]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="43" width="110" height="7" uuid="57049e4b-6987-4c27-83e0-19b2024bb144"/>
+				<textElement verticalAlignment="Middle">
+					<font size="4" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[SİNCAN V.D. 127 037 68 96]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="145" width="50" height="11" uuid="630b308e-6c3a-4c51-b662-732415b93caf"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{IsCorporate} ? "Kontak Email:" : "" )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="112" width="50" height="11" uuid="38aecb81-03bc-4935-88c5-78cb4ad02aa4"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{IsCorporate} ? "Firma Telefon:" : "Telefon:" )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="167" width="50" height="11" uuid="d00317da-956d-45fa-9cab-80c64877d163"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{IsCorporate} ? "Firma Adresi:" : "" )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="156" width="50" height="11" uuid="e69436dc-ead3-49ad-a7d5-f956ec27e2a8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{IsCorporate} ? "Proje Adı:" : "" )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="90" width="50" height="11" uuid="810e2c22-c423-496e-8629-2980bb17a81e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{IsCorporate} ? "Firma Adı:" : "Müşteri Adı:" )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="101" width="50" height="11" uuid="cf71a050-438f-431a-ae96-e4125fdc87b0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{IsCorporate} ? "Firma Yetkilisi:" : "" )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="123" width="50" height="11" uuid="75793eaf-5784-4a54-b1e4-8772533ed3fe"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{IsCorporate} ? "Firma Fax:" : "" )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="134" width="50" height="11" uuid="ffc6520f-f47c-4a7e-8970-f547be764f83"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{IsCorporate} ? "Vergi Dairesi/No:" : "" )]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="84" width="555" height="1" uuid="2fd35d43-0d11-402a-9d91-f37ed2852fd7"/>
+			</line>
+			<textField>
+				<reportElement x="56" y="90" width="100" height="11" uuid="656d9caf-6a3d-4803-8e63-895f2fb1968f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CustomerFullName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="56" y="101" width="100" height="11" uuid="c3593a34-de74-422e-8d66-438cd7d6cafa"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{IsCorporate} ? $F{CustomerContact} : "" )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="56" y="145" width="100" height="11" uuid="10ebcc64-a7b3-4a13-933b-62009f733378"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{IsCorporate} ? $F{CustomerContactEmail} : "" )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="56" y="156" width="100" height="11" uuid="256df8cc-868c-46a6-99fe-5aff7cad3eb7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{IsCorporate} ? $F{ProjectName} : "" )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="56" y="167" width="100" height="11" uuid="d8117594-6ae9-4f98-844c-87c2ec794e3e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{IsCorporate} ? $F{Address1} : "" )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="56" y="178" width="100" height="11" uuid="3b926a60-9992-47cd-a502-5a1e85db4f43"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{IsCorporate} ? $F{Address2} : "" )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="56" y="134" width="100" height="11" uuid="cbc6cf99-fac6-4c47-bf1e-c3bbb02ddc55"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{IsCorporate} ? $F{TaxOfficeAndNo} : "" )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="56" y="112" width="100" height="11" uuid="d959cdd4-cbae-4914-8818-1528baf23a69"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Phone}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="56" y="123" width="100" height="11" uuid="8dc85adb-5074-4084-8cd8-4dd6baefcc81"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{IsCorporate} ? $F{Fax} : "" )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="449" y="11" width="106" height="11" uuid="ded4f50d-9fac-4c44-9411-8073121a6bfb"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ProposalNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="449" y="0" width="106" height="11" uuid="e5a606c4-37b8-4085-86b4-dd3e573d0e9f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ProposalDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="449" y="33" width="106" height="11" uuid="ca6c0c7c-07b2-4348-bd62-132918341d91"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RevisionDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="449" y="22" width="106" height="11" uuid="bb0d2448-b932-4e6e-8d47-cc24dbe8fdd6"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RevisionNo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="394" y="44" width="50" height="11" uuid="7232f8bf-9f1d-4e1f-b7cb-286ec6d9bba6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Kur Bilgisi:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="449" y="44" width="106" height="11" uuid="ca40f2f5-44b0-4949-8734-8e93689f58a7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CurrencyCode} + " "+ $F{CurrencyValue}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="12" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="12" uuid="cfea088c-c206-4e4e-90bc-c1f712743048"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="false" isItalic="false" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Teklif Kalemleri]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="11" splitType="Stretch">
+			<staticText>
+				<reportElement x="30" y="0" width="354" height="11" uuid="8e7ec4a3-9e90-49e8-b02d-145aaeb949c9"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Ürün Özellikleri]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="30" height="11" uuid="5c502fa8-0c96-48f8-8a78-19e0ad440376"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Sıra]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="384" y="0" width="27" height="11" uuid="ee2e4cbe-169f-4caf-bfad-4e8ca34fd79b"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Adet]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="411" y="0" width="72" height="11" uuid="782617e7-4f2b-4691-87c7-abde83e17edc"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Birim Fiyat]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="483" y="0" width="72" height="11" uuid="16757fd0-c7fb-44fe-844b-25b9ecfffa10"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Toplam Fiyat]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="117" splitType="Stretch">
+			<textField>
+				<reportElement x="156" y="50" width="228" height="67" uuid="e77b0c62-fd8b-45c9-8ecb-cb5edb601647"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font size="5" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{PropertyValueText} == null ? "":$F{PropertyValueText}) + " "  +$F{OrderOfferingDescription}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="156" y="10" width="173" height="10" uuid="9dade849-51c7-48e1-a3f2-e17cd0b7a4f6"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ProductType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="156" y="20" width="173" height="10" uuid="f8d53b3a-52c2-40fe-9f23-12ff1e667cea"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ProductSurfaceType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="156" y="30" width="173" height="10" uuid="03c64e44-15bd-4bf3-bfd5-4a3320ff5b36"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ProductWingType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="156" y="40" width="173" height="10" uuid="81e9abcf-2056-47e4-8d64-6fbe239bb02f"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ProductCaseType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="156" y="0" width="173" height="10" uuid="e9daba00-f4ae-4af0-8c3d-2c246cc405b1"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{OfferingName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="384" y="0" width="27" height="117" uuid="1210246a-fec0-49c9-844a-177ab4e1771f"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Quantity}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="411" y="0" width="72" height="117" uuid="3f126112-6540-4250-bec5-fa460ec94988"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{InstanceAmount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="483" y="0" width="72" height="117" uuid="3f0da7a8-a2d5-4ac7-82f4-5f19be805987"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TotalAmount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement x="0" y="0" width="30" height="117" uuid="a3e89dfe-853e-4035-b722-5bccb5436553"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{row_number}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="106" y="0" width="50" height="10" uuid="433ad979-fe62-489b-a806-b87f986c6ba8"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Ürün Adı:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="106" y="10" width="50" height="10" uuid="46c251eb-8d37-4b89-8bbe-3114a4ba926f"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Ürün Tipi:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="106" y="20" width="50" height="10" uuid="13dfbdaa-9ccb-4c69-b047-584d5a553ace"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Yüzey Tipi:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="106" y="30" width="50" height="10" uuid="81738868-6eed-4729-8a92-c4a0b745bbe9"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Kanat Tipi:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="106" y="40" width="50" height="10" uuid="b723eefd-3897-43ef-8d80-ac0e0b3a9a33"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Kasa Tipi:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="106" y="50" width="50" height="67" uuid="2a848cd2-e2d1-4cca-8fcb-777bd250ac03"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Diğer Özellikler:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="329" y="20" width="55" height="10" uuid="7f533b4a-667f-4ffd-9f46-0829f4e40e35"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Dimension}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="329" y="30" width="55" height="10" uuid="9c88a754-3d5e-4014-a633-a896804da7bc"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Duvar Ölçüsü]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="329" y="40" width="55" height="10" uuid="9e8fe277-ab3e-4c35-82e9-19403023bb18"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EnteredDimension}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="30" y="0" width="76" height="117" uuid="706bbfea-2ea9-4c9f-b157-2346ceb4112e"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<imageExpression><![CDATA[$P{IMG_PATH}+$F{ImagePath}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="329" y="10" width="55" height="10" uuid="9843733f-213b-45a0-8b86-e2c7ed5a7fa1"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Üretim Ölçüsü]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="18" splitType="Stretch">
+			<staticText>
+				<reportElement x="499" y="7" width="26" height="11" uuid="b8ba3694-ff6d-4580-9769-43437ab7746c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="5" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Sayfa:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="528" y="7" width="26" height="11" uuid="777b6a1e-f80e-47d8-928c-32fef5f07b18"/>
+				<textElement verticalAlignment="Middle">
+					<font size="5" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="163" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement x="483" y="18" width="72" height="9" uuid="a2510c97-650a-4e65-941a-ec3acf939182"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{InstallationAmount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="483" y="27" width="72" height="9" uuid="1d4d2b5e-b592-4699-b039-8e5c434db98f"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TransportAmount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="411" y="18" width="72" height="9" uuid="32f499b4-fb78-464a-ac52-595672c262c9"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Montaj :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="411" y="27" width="72" height="9" uuid="232141dd-93b8-424a-8267-89b4a09c7ec9"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Nakliye :]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="483" y="36" width="72" height="9" uuid="e94b2c0c-0a6b-4a31-9d08-0f02946148c6"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TaxValue}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="411" y="0" width="72" height="9" uuid="023717c2-0c0d-4741-a3c2-2137a96fbd01"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Kapı Toplam :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="411" y="36" width="72" height="9" uuid="1a2de7eb-e032-4aac-9316-587d274b0629"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[KDV :]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="483" y="0" width="72" height="9" uuid="927d2851-7365-4392-ae71-467460971e8a"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TotalCost}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="411" y="45" width="72" height="9" uuid="6150f02c-4a2a-4d99-a64f-eaea96468d70"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Genel Toplam :]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="483" y="45" width="72" height="9" uuid="019266ad-9e53-4256-a8ad-a5373be7dbe8"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FinalResult}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="127" width="50" height="11" uuid="c3d45a97-e868-438b-a924-0991c71cf3d2"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Opsiyon:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="105" width="227" height="11" uuid="52405d6c-ce99-4482-8218-a4c4e9618328"/>
+				<box leftPadding="3">
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DeliveryAddress2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="94" width="227" height="11" uuid="dd438bb0-aa47-47a2-8eeb-10c526bbd422"/>
+				<box leftPadding="3">
+					<topPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DeliveryAddress1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="277" height="18" uuid="326f4a30-e09f-47e4-b5c8-9757baa53c8d"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Açıklamalar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="18" width="277" height="24" uuid="285cc2e0-681b-45c0-b3a3-cbae4efcc89c"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Top">
+					<font size="8" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[*Birim Fiyatlarımıza  KDV dahil değildir.
+*Ölçüler ve adetler değiştigi takdirde fiyat revize edilecektir.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="138" width="50" height="11" uuid="5cee6562-518b-4a3c-a2ca-e6e2561c5eca"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Ödeme Koşulları:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="116" width="50" height="11" uuid="76021a86-b0e1-4130-918a-007156de62d6"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Teslimat Tarihi:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="94" width="50" height="22" uuid="329a2461-f2fd-49cf-bf44-b53543c6215b"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Teslimat Adresi:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="50" y="116" width="227" height="11" uuid="67c79e27-0085-4b10-884c-ec1d11210f5f"/>
+				<box leftPadding="3">
+					<topPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CommitmentDate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="50" y="127" width="227" height="11" uuid="fef1722b-1b3c-47d1-8a3d-54da897e79af"/>
+				<box leftPadding="3">
+					<topPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[7 İş günü]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="152" width="50" height="11" uuid="9480faf3-963e-4d05-8452-7d81ce29c5eb"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Hazırlayan:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="277" y="152" width="50" height="11" uuid="dfa559eb-da23-4163-b2c8-8712c5202e4b"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Onaylayan:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="327" y="152" width="227" height="11" uuid="6053ca33-ee9d-4fef-af47-6df38e179535"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Hakan Emektar]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="152" width="227" height="11" uuid="a8694683-f7e3-4e7a-8c5e-b2af3933de37"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SalesResponsible}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="411" y="9" width="72" height="9" uuid="5ecc104d-b995-450d-ae58-96b71d169382"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Genel İndirim :]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="483" y="9" width="72" height="9" uuid="d02494b5-ac82-4d55-b123-56b1df11d1bc"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FinalDiscount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="72" width="227" height="22" uuid="0d7ca8f1-30dc-43b6-8244-10517b71d560"/>
+				<box topPadding="1" leftPadding="3" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{InstallationRequested} ? $F{InstallationDescription} : "Bu teklife montaj dahil edilmemiştir." )]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="72" width="50" height="22" uuid="b7d26d00-5138-4af7-88ab-b900e460bf74"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Montaj Bilgisi:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="50" width="227" height="22" uuid="bb2f5c9f-c866-4425-badc-a42cb924a41c"/>
+				<box topPadding="1" leftPadding="3" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{TransportRequested} ? $F{TransportDescription} : "Bu teklife nakliye dahil edilmemiştir." )]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="50" width="50" height="22" uuid="94108b88-9c83-4d85-8d24-6920a8d3dc6a"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Nakliye Bilgisi:]]></text>
+			</staticText>
+			<textField pattern="MM/dd/yyyy" isBlankWhenNull="true">
+				<reportElement x="50" y="138" width="227" height="11" uuid="f9c3da5f-65ed-41cc-a2eb-cbf715cdd6a8"/>
+				<box leftPadding="3">
+					<topPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PaymentInformation}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
